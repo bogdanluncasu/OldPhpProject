@@ -1,0 +1,76 @@
+body {
+    background: burlywood;
+}
+
+* {
+    margin-top: 0px;
+}
+/*NavBar Style*/
+#main_menu {
+    background-color: #804000;
+    height:25px;
+    text-align: center;
+    margin: 0;
+    overflow: hidden;
+}
+
+#main_container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    height: 800px;
+    background: burlywood;
+}
+
+footer {
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    height: 100px;
+    text-align: center;
+}
+
+#data_container {
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    height: 400px;
+
+}
+
+.form_container {
+    display: none;
+    padding: 45px;
+    width: 300px;
+    float: left;
+    text-align: center;
+    border: 1px dotted sienna;
+}
+
+.register_form {
+    display: none;
+}
+
+.login_form {
+    display: none;
+}
+
+#register_show {
+    background: gray;
+    border-radius: 20%;
+    opacity: 0.5;
+}
+#register_show:hover {
+    background: gainsboro;
+    border-radius: 20%;
+}
+#login_show {
+    background: gray;
+    border-radius: 20%;
+    opacity: 0.5;
+}
+#login_show:hover {
+    background: gainsboro;
+    border-radius: 20%;
+}
