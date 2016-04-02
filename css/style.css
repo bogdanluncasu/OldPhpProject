@@ -13,7 +13,9 @@ body {
     margin: 0;
     overflow: hidden;
 }
-
+#error,#login_error {
+    color:red;
+}
 #main_container {
     margin-left: auto;
     margin-right: auto;
@@ -56,21 +58,19 @@ footer {
     display: none;
 }
 
-#register_show {
+.show {
     background: gray;
     border-radius: 20%;
     opacity: 0.5;
 }
-#register_show:hover {
+.show:hover {
     background: gainsboro;
     border-radius: 20%;
 }
-#login_show {
-    background: gray;
-    border-radius: 20%;
-    opacity: 0.5;
+.centered{
+    text-align: center;
 }
-#login_show:hover {
-    background: gainsboro;
-    border-radius: 20%;
+.pict{
+    width:237px;
+    height:300px;
 }

@@ -6,5 +6,5 @@
     <link rel = "stylesheet" type = "text/css"
           href = "css/style.css">
     <script src="js/jquery.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/game.js"></script>
 </head>
