@@ -2,6 +2,53 @@
  * Created by bogdan on 4/2/16.
  */
 $(document).ready(function () {
+    //Index Slide - info
+    $("#main_building_info").click(
+        function () {
+            $("#main_building_info_list").slideToggle();
+        }
+    );
+    $("#barracks_info").click(
+        function () {
+            $("#barracks_info_list").slideToggle();
+        }
+    );
+    $("#farm_info").click(
+        function () {
+            $("#farm_info_list").slideToggle();
+        }
+    );
+    $("#market_info").click(
+        function () {
+            $("#market_info_list").slideToggle();
+        }
+    );
+    $("#gold_info").click(
+        function () {
+            $("#gold_info_list").slideToggle();
+        }
+    );
+    $("#gouvern_info").click(
+        function () {
+            $("#gouvern_info_list").slideToggle();
+        }
+    );
+    $("#wall_info").click(
+        function () {
+            $("#wall_info_list").slideToggle();
+        }
+    );
+//------------------------
+    $(".register_form").keyup(function (event) {
+        if (event.keyCode == 13) {
+            $("#register").click();
+        }
+    });
+    $(".login_form").keyup(function (event) {
+        if (event.keyCode == 13) {
+            $("#login").click();
+        }
+    });
     $("#register_show").click(
         function () {
             $(".form_container").show();

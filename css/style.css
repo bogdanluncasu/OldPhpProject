@@ -1,6 +1,7 @@
 body {
-    background: burlywood;
 	 background-image:url("../resources/back.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 * {
@@ -14,8 +15,8 @@ body {
 /*NavBar Style*/
 #main_menu {
     background-image:url("../resources/logoUL.jpg");
-	background-size:800px 130px;
-	height:130px;
+	background-size:100% 130px;
+	height:16.25%;
     text-align: center;
     margin: 0;
     overflow: hidden;
@@ -58,7 +59,7 @@ footer {
     width: 300px;
     float: left;
     text-align: center;
-    border: 1px dotted sienna;
+
 }
 
 .register_form {
@@ -81,9 +82,43 @@ footer {
 .centered{
     text-align: center;
 }
-.pict{
 
+
+.pict{
+    transform: rotateY(180deg);
     width:237px;
     height:300px;
+    transition: all 1.0s linear;
 }
 
+
+#choose:hover .pict {
+    box-shadow: -5px 5px 5px gray;
+}
+
+
+#main_container .scroll-bar{
+    background: red;
+}
+::-webkit-scrollbar {
+    width: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: -webkit-linear-gradient(left, dimgray, aliceblue);
+    border-radius: 20px;
+}
+
+
+.hideradiobutton{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    apperance:none;
+}
+p.centered.welcome{
+    margin-top: 40px;
+}

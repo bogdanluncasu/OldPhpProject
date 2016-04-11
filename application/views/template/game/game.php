@@ -39,6 +39,7 @@
                                            alt="My magic will tear you apart"/></label>
                 </div>
                 <input  type="button" class="show" value="Let's Fight" id="fight"/>
+                <p class="centered welcome" >Folosesteti puterile magice pentru a-ti alege #eroul cu intelepciune</p>
             </div>
         </div>
 

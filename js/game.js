@@ -2,6 +2,7 @@
  * Created by bogdan on 4/2/16.
  */
 $(document).ready(function () {
+    $(".pict").on('dragstart', function(event) { event.preventDefault(); });
     $("#logout").click(
         function () {
             $(location).attr("href", "game/logout");
