@@ -1,5 +1,6 @@
 body {
     background: burlywood;
+	 background-image:url("../resources/back.jpg");
 }
 
 * {
@@ -7,8 +8,9 @@ body {
 }
 /*NavBar Style*/
 #main_menu {
-    background-color: #804000;
-    height:25px;
+    background-image:url("../resources/logoUL.jpg");
+	background-size:800px 130px;
+	height:130px;
     text-align: center;
     margin: 0;
     overflow: hidden;
@@ -21,7 +23,8 @@ body {
     margin-right: auto;
     width: 800px;
     height: 800px;
-    background: burlywood;
+    background: transparent;
+	
 }
 
 footer {
@@ -32,8 +35,10 @@ footer {
     text-align: center;
 }
 
-#data_container {
 
+#data_container {
+    background-image:url("../resources/landscape-sky.jpg");
+   border-radius: 25px;
     margin-left: auto;
     margin-right: auto;
     width: 800px;
@@ -71,6 +76,7 @@ footer {
     text-align: center;
 }
 .pict{
+
     width:237px;
     height:300px;
 }
