@@ -6,6 +6,11 @@ body {
 * {
     margin-top: 0px;
 }
+.welcome{
+    font-family:Jokerman ;
+    font-size: medium;
+    color: whitesmoke;
+}
 /*NavBar Style*/
 #main_menu {
     background-image:url("../resources/logoUL.jpg");
@@ -42,7 +47,8 @@ footer {
     margin-left: auto;
     margin-right: auto;
     width: 800px;
-    height: 400px;
+    height: 570px;
+    overflow: auto;
 
 }
 
@@ -80,3 +86,4 @@ footer {
     width:237px;
     height:300px;
 }
+
