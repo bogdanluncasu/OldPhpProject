@@ -1,10 +1,16 @@
 <body>
-<?php if (isset($_SESSION['username'])){
+<?php
+//print_r($villages);
+if (isset($_SESSION['username'])){
     if ($_SESSION['first'] != 0) {
         ?>
         <div id="main_container">
             <nav id="main_menu">
-                <p class="welcome">Welcome <span style="color:beige"><?php echo $_SESSION['username']; ?> </span>|
+                <p class="welcome">Welcome <span style="color:beige"><?php echo $_SESSION['username']; ?> </span> GOLD <?php
+                    if(!isset($_GET['village'])||intval($_GET['village'])>=count($villages))
+                        $village=0;
+                    else $village=intval($_GET['village']);
+                    echo $villages[$village]['gold']; ?>|
                     <input type="button"
                            id="logout"
                            class="show"
@@ -12,9 +18,18 @@
                 </p>
             </nav>
             <div id="data_container">
-                <div id="rules">
-                    <?php ?>
-                </div>
+                <?php if(isset($_GET['open'])&&$_GET['open']=='mainBuilding'){
+                    //main building Stuff ...
+                } else {?>
+                <p><br/>Main Building : <?php echo $villages[$village]['mainBuilding']?></p>
+                <p><br/>Cazarma : <?php echo $villages[$village]['cazarma']?></p>
+                <p><br/>Ferma : <?php echo $villages[$village]['ferma']?></p>
+                <p><br/>Mina : <?php echo $villages[$village]['mina']?></p>
+                <p><br/>Guvern : <?php echo $villages[$village]['guvern']?></p>
+                <p><br/>Targ : <?php echo $villages[$village]['targ']?></p>
+                <p><br/>Zid : <?php echo $villages[$village]['zid']?></p>
+                <?php } ?>
+              
             </div>
         </div>
     <?php } else { ?>

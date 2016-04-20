@@ -7,4 +7,6 @@
           href = "css/media.css">
     <script src="js/jquery.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/facebookGame.js"></script>
+
 </head>

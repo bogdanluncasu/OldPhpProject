@@ -15,6 +15,7 @@ Class Site extends CI_Controller
         $this->load->library(array('session', 'form_validation', 'email'));
         $this->load->database();
         $this->load->model('user');
+        
     }
     public function index(){
         $this->home();
@@ -51,6 +52,12 @@ Class Site extends CI_Controller
         }else{
             echo "2";
         }
+    }
+    public function loginFb(){
+        $username=$this->input->post('fbname');
+        $facebookId=$this->input->post('fbId');
+        $this->user->loginFacebook($username,$facebookId);
+        echo "ok";
     }
 
     

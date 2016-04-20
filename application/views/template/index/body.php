@@ -1,4 +1,5 @@
 <body>
+
 <div id="main_container">
     <nav id="main_menu">
         <input type="button" id="register_show" class="show" value="Register"/>
@@ -17,6 +18,8 @@
                 <p>Username</p> <input type="text" id="login_username"/>
                 <p>Password</p> <input type="password" id="login_password"/>
                 <p id="login_error"></p><input type="button" id="login" value="Login"/>
+                <div id="status"></div>
+                <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false"></div>
             </form>
         </div>
         <div id="rules" class="welcome">

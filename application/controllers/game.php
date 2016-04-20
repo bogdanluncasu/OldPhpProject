@@ -15,14 +15,19 @@ Class Game extends CI_Controller
         $this->load->library(array('session', 'form_validation', 'email'));
         $this->load->database();
         $this->load->model('user');
+        $this->load->model('village');
     }
     public function index(){
         $this->home();
     }
-
+    public function chooseHero(){
+        $this->user->first($_SESSION['username']);
+        $this->village->create_village($email=$this->input->post('type'));
+    }
     private function home(){
+        $data['villages']=$this->user->get_villages($_SESSION['id']);
         $this->load->view("template/game/header");
-        $this->load->view("template/game/game");
+        $this->load->view("template/game/game",$data);
         $this->load->view("template/game/footer");
     }
     public function logout(){
@@ -31,6 +36,17 @@ Class Game extends CI_Controller
             'email'  =>'',
             'first'     => '',
             'id' => '',
+        );
+        $this->session->unset_userdata($user);
+        $this->session->sess_destroy();
+        redirect("/");
+    }
+    public function logoutFacebook(){
+        $user = array(
+            'username'   =>'',
+            'first'     => '',
+            'id' => '',
+            'facebookId'=>''
         );
         $this->session->unset_userdata($user);
         $this->session->sess_destroy();

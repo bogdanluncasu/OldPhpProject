@@ -1,12 +1,14 @@
 /**
  * Created by bogdan on 4/2/16.
  */
+
 $(document).ready(function () {
-    $(".pict").on('dragstart', function(event) { event.preventDefault(); });
     $("#logout").click(
         function () {
-            $(location).attr("href", "game/logout");
+            logout();
+            //$(location).attr("href", "game/logout");
         }
+
     );
     $("#smart,#barbar,#mage").click(function () {
         var barbaroffset = $("#barbar").offset();
@@ -20,5 +22,20 @@ $(document).ready(function () {
             $("#fight").offset({top: mageoffset.top + 20, left: mageoffset.left});
 
     });
-
+    $("#fight").click(
+        function () {
+            if($("#barbar").checked){
+                var type=1;
+            }else if($("#smart").checked){
+                var type=2;
+            }else{
+                var type=3;
+            }
+            console.log("WOW");
+            $.post("game/chooseHero", {
+                    type: type,
+                }, function (data) {
+                $(location).attr("href", "game");
+            });
+        });
 });

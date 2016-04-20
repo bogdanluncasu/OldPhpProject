@@ -19,6 +19,16 @@ class User extends CI_Model{
         );
         $this->db->insert('tw_users',$data);
     }
+
+    public function registerFacebook($username,$facebookId){
+        $data=array(
+            'username'=>$username,
+            'first'=>0,
+            'facebookId'=>$facebookId
+        );
+        $this->db->insert('tw_users',$data);
+    }
+
     public function validate($username){
         $this->db->where("username",$username);
         $query=$this->db->get("tw_users");
@@ -42,6 +52,58 @@ class User extends CI_Model{
             return true;
         }
         return false;
+    }
+
+    public function loginFacebook($username,$facebookId){
+        $this->db->where("username",$username);
+        $this->db->where("facebookId",$facebookId);
+        $query=$this->db->get("tw_users");
+        if($query->num_rows()>0){
+            foreach($query->result() as $row){
+                $user=array(
+                    'id'=>$row->id,
+                    'username'=>$row->username,
+                    'first' =>$row->first
+                );
+            }
+            $this->session->set_userdata($user);
+        }else{
+            $this->registerFacebook($username,$facebookId);
+            $this->loginFacebook($username,$facebookId);
+        }
+    }
+
+    public function first($username){
+        $data = array(
+            'first' => 1
+        );
+        $this->db->where("username",$username);
+        $this->db->update("tw_users",$data);
+        $_SESSION['first']=1;
+        return true;
+    }
+    public function get_villages($userId){
+        $this->db->where("userId",$userId);
+        $query=$this->db->get("tw_village");
+        $villages=array();
+        $i = 0;
+        foreach($query->result() as $row){
+                $village=array(
+                    'id'=>$row->villageId,
+                    'gold'=>$row->gold,
+                    'mainBuilding'=>$row->mainBuilding,
+                    'cazarma'=>$row->cazarma,
+                    'ferma'=>$row->ferma,
+                    'mina'=>$row->mina,
+                    'guvern'=>$row->guvern,
+                    'targ'=>$row->targ,
+                    'zid'=>$row->zid,
+                    'type'=>$row->type
+                );
+            $villages[$i]=$village;
+            $i=$i+1;
+        }
+        return $villages;
     }
 
 }
