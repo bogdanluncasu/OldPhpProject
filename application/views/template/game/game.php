@@ -1,4 +1,4 @@
-<body>
+<body onload="init();">
 <?php
 //print_r($villages);
 if (isset($_SESSION['username'])){
@@ -18,16 +18,25 @@ if (isset($_SESSION['username'])){
                 </p>
             </nav>
             <div id="data_container">
-                <?php if(isset($_GET['open'])&&$_GET['open']=='mainBuilding'){
-                    //main building Stuff ...
-                } else {?>
-                <p><br/>Main Building : <?php echo $villages[$village]['mainBuilding']?></p>
-                <p><br/>Cazarma : <?php echo $villages[$village]['cazarma']?></p>
-                <p><br/>Ferma : <?php echo $villages[$village]['ferma']?></p>
-                <p><br/>Mina : <?php echo $villages[$village]['mina']?></p>
-                <p><br/>Guvern : <?php echo $villages[$village]['guvern']?></p>
-                <p><br/>Targ : <?php echo $villages[$village]['targ']?></p>
-                <p><br/>Zid : <?php echo $villages[$village]['zid']?></p>
+                <?php require 'js/createMap.php'; ?>
+                <?php if(isset($_GET['open'])&&$_GET['open']=='map'){ ?>
+                    <canvas id="mapCanvas" width="600" height="418" style="margin-left:auto;margin-right:auto">
+                        alternate content
+                    </canvas>
+              <?php  } else if (isset($_GET['open'])&&$_GET['open']=='barracks'){
+                    $data['level_barracks']=$villages[$village]['cazarma'];
+                    $this->load->view("template/game/barracks.php",$data);
+                }else if (isset($_GET['open'])&&$_GET['open']=='main'){
+                    $data['level_main']=$villages[$village]['mainBuilding'];
+                    $this->load->view("template/game/main.php",$data);
+                }else if (isset($_GET['open'])&&$_GET['open']=='farm'){
+                    $data['level_farm']=$villages[$village]['ferma'];
+                    $this->load->view("template/game/farm.php",$data);
+                }else{?>
+                    <?php require 'js/createGame.php'; ?>
+                    <canvas id="gameCanvas" width="600" height="418" style="margin-left:auto;margin-right:auto">
+                        alternate content
+                    </canvas>
                 <?php } ?>
               
             </div>

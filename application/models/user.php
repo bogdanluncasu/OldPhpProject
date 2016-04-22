@@ -98,7 +98,9 @@ class User extends CI_Model{
                     'guvern'=>$row->guvern,
                     'targ'=>$row->targ,
                     'zid'=>$row->zid,
-                    'type'=>$row->type
+                    'type'=>$row->type,
+                    'x'=>$row->x,
+                    'y'=>$row->y
                 );
             $villages[$i]=$village;
             $i=$i+1;

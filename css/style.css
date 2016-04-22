@@ -65,6 +65,18 @@ footer {
 .register_form {
     display: none;
 }
+.building_name > h2{
+    color:moccasin;
+    text-align: center;
+}
+#mapCanvas,#gameCanvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    display: block;
+}
 
 .login_form {
     display: none;

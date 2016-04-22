@@ -26,6 +26,7 @@ Class Game extends CI_Controller
     }
     private function home(){
         $data['villages']=$this->user->get_villages($_SESSION['id']);
+        $data['all_villages']=$this->village->get_all_villages();
         $this->load->view("template/game/header");
         $this->load->view("template/game/game",$data);
         $this->load->view("template/game/footer");
