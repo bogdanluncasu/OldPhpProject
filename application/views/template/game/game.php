@@ -1,4 +1,4 @@
-<body onload="init();">
+<body>
 <?php
 //print_r($villages);
 if (isset($_SESSION['username'])){
@@ -10,7 +10,9 @@ if (isset($_SESSION['username'])){
                     if(!isset($_GET['village'])||intval($_GET['village'])>=count($villages))
                         $village=0;
                     else $village=intval($_GET['village']);
-                    echo $villages[$village]['gold']; ?>|
+                    echo $villages[$village]['gold'];
+                    //"<img src=".$units[0]['image']." />";
+                    ?>|
                     <input type="button"
                            id="logout"
                            class="show"
@@ -18,25 +20,35 @@ if (isset($_SESSION['username'])){
                 </p>
             </nav>
             <div id="data_container">
-                <?php require 'js/createMap.php'; ?>
                 <?php if(isset($_GET['open'])&&$_GET['open']=='map'){ ?>
+
+                    <?php require 'js/createMap.php'; ?>
+
                     <canvas id="mapCanvas" width="600" height="418" style="margin-left:auto;margin-right:auto">
                         alternate content
                     </canvas>
+                    <script>initMap();</script>
               <?php  } else if (isset($_GET['open'])&&$_GET['open']=='barracks'){
                     $data['level_barracks']=$villages[$village]['cazarma'];
+                    $data['units']=$units;
+                    $data['gold']=$villages[$village]['gold'];
+                    $data['recruiting']=$recruiting_units;
                     $this->load->view("template/game/barracks.php",$data);
                 }else if (isset($_GET['open'])&&$_GET['open']=='main'){
                     $data['level_main']=$villages[$village]['mainBuilding'];
                     $this->load->view("template/game/main.php",$data);
-                }else if (isset($_GET['open'])&&$_GET['open']=='farm'){
+                }else if (isset($_GET['open'])&&$_GET['open']=='chat'){
+                  $this->load->view("template/game/chat.php");
+              }else if (isset($_GET['open'])&&$_GET['open']=='farm'){
                     $data['level_farm']=$villages[$village]['ferma'];
                     $this->load->view("template/game/farm.php",$data);
                 }else{?>
                     <?php require 'js/createGame.php'; ?>
-                    <canvas id="gameCanvas" width="600" height="418" style="margin-left:auto;margin-right:auto">
+
+                    <canvas id="gameCanvas" width="600" height="418" style="margin-left:auto;margin-right:auto" >
                         alternate content
                     </canvas>
+                    <script>initGame();</script>
                 <?php } ?>
               
             </div>

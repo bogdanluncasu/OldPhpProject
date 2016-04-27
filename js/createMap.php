@@ -2,7 +2,7 @@
     var stage, holder;
     var x=<?php echo $villages[$village]['x']?>;
     var y=<?php echo $villages[$village]['y']?>;
-    function init() {
+    function initMap() {
         stage = new createjs.Stage("mapCanvas");
         stage.enableMouseOver(20);
         createActors();

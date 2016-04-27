@@ -1,6 +1,8 @@
 <script>
+   
+
     var stage, holder;
-    function init() {
+    function initGame() {
         stage = new createjs.Stage("gameCanvas");
         stage.enableMouseOver(20);
 
