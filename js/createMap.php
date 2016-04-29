@@ -2,10 +2,26 @@
     var stage, holder;
     var x=<?php echo $villages[$village]['x']?>;
     var y=<?php echo $villages[$village]['y']?>;
-    function initMap() {
+    var villages=<?php echo json_encode($all_villages);?>;
+    var map =new Array(400);
+    function initMap(){
+        for(var i=0;i<400;i++) {
+            var row=new Array(400);
+            villages.forEach(function(village) {
+                if(i==village['x']) {
+                    row[village['y']] = 1;
+                }
+            });
+
+            map[i]=row;
+        }
+        mp(x, y);
+
+    }
+    function mp(mx,my) {
         stage = new createjs.Stage("mapCanvas");
         stage.enableMouseOver(20);
-        createActors();
+        createActors(mx,my);
         var up = new createjs.Bitmap("resources/graphics/map/up.png");
         up.x = 300;
         up.on("click", function () {
@@ -34,23 +50,15 @@
         stage.addChild(down);
         createjs.Ticker.on("tick", stage);
     }
-    createActors = function () {
-
-        for (var i = 0; i < 9; i++) {
-            var grass = new Array();
-            for (var j = 0; j < 9; j++) {
-                if(i==5&&j==3)
-                    grass[j] = new createjs.Bitmap("resources/graphics/map/v1.png");
-                else
-                    grass[j] = new createjs.Bitmap("resources/graphics/map/gras1.png");
-                grass[j].x = 53 * (j + i) % 472 + 50;
-                grass[j].y = 38 * i + 50;
-                grass[j].on("click", function () {
-                    //up();
-                });
-                stage.addChild(grass[j]);
-            }
-        }
+    createActors = function (mx,my) {
+        var village = new createjs.Bitmap("resources/graphics/map/v6.png");
+        village.x = 280;
+        village.y = 180;
+        village.on("click", function () {
+            //up();
+        });
+        stage.addChild(village);
+        console.log(map[24][120]);
     }
 
 

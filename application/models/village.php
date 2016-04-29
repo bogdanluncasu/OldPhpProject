@@ -58,15 +58,15 @@ class Village extends CI_Model
         return $villages;
     }
 
-    public function get_recruit_units($userId)
+    public function getRecruitUnits($userId,$villageId)
     {
         $this->db->where("userId", $userId);
+        $this->db->where("villageId", $villageId);
         $query = $this->db->get("tw_log_units");
         $units = array();
         $i = 0;
         foreach ($query->result() as $row) {
             $unit = array(
-                'villageId' => $row->villageId,
                 'unitName' => $row->unitName,
                 'timestamp' =>  $row->timestamp
             );

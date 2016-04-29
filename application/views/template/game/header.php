@@ -10,6 +10,6 @@
     <script src="js/jquery.js"></script>
     <script src="js/game.js"></script>
     <script src="js/easeJs.js"></script>
-    <script src="js/facebookGame.js"></script>
+    <script src="js/facebook.js"></script>
     
 </head>
