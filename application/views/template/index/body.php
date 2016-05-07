@@ -18,8 +18,8 @@
                 <p>Username</p> <input type="text" id="login_username"/>
                 <p>Password</p> <input type="password" id="login_password"/>
                 <p id="login_error"></p><input type="button" id="login" value="Login"/>
-                <div id="status"></div>
-                <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false"></div>
+                <div id="status">Login with facebook</div>
+                <input type="button" id="facebookBtn" value="Facebook Login"/>
             </form>
         </div>
         <div id="rules" class="welcome">

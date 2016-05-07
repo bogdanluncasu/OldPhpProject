@@ -18,7 +18,10 @@ Class Site extends CI_Controller
         
     }
     public function index(){
-        $this->home();
+        if(isset($_SESSION['id']))
+            die("<script>location.href = 'game'</script>");
+        else
+            $this->home();
     }
 
     private function home(){

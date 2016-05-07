@@ -5,10 +5,8 @@
 $(document).ready(function () {
     $("#logout").click(
         function () {
-            logout();
-            //$(location).attr("href", "game/logout");
+            $(location).attr("href", "game/logout");
         }
-
     );
     $("#smart,#barbar,#mage").click(function () {
         var barbaroffset = $("#barbar").offset();
@@ -24,18 +22,19 @@ $(document).ready(function () {
     });
     $("#fight").click(
         function () {
-            if($("#barbar").checked){
-                var type=1;
-            }else if($("#smart").checked){
-                var type=2;
-            }else{
-                var type=3;
+            if ($('#barbar').is(':checked')) {
+                var type = 1;
+            } else if ($('#smart').is(':checked')) {
+                var type = 2;
+            } else {
+                var type = 3;
             }
-            console.log("WOW");
+
             $.post("game/chooseHero", {
-                    type: type,
-                }, function (data) {
+                type: type,
+            }, function (data) {
                 $(location).attr("href", "game");
             });
         });
+
 });

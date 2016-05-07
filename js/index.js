@@ -2,6 +2,11 @@
  * Created by bogdan on 4/2/16.
  */
 $(document).ready(function () {
+    $("#facebookBtn").click(
+        function() {
+            login();
+        }
+    );
     //Index Slide - info
     $("#main_building_info").click(
         function () {

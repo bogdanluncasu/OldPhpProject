@@ -20,7 +20,10 @@ if (isset($_SESSION['username'])){
                 </p>
             </nav>
             <div id="data_container">
-                <?php if(isset($_GET['open'])&&$_GET['open']=='map'){ ?>
+                <?php
+                $data['gold']=$villages[$village]['gold'];
+                $_SESSION['current_village']=$villages[$village]['id'];
+                if(isset($_GET['open'])&&$_GET['open']=='map'){ ?>
 
                     <?php require 'js/createMap.php'; ?>
 
@@ -31,8 +34,8 @@ if (isset($_SESSION['username'])){
               <?php  } else if (isset($_GET['open'])&&$_GET['open']=='barracks'){
                     $data['level_barracks']=$villages[$village]['cazarma'];
                     $data['units']=$units;
-                    $data['gold']=$villages[$village]['gold'];
                     $data['recruiting']=$recruiting_units;
+                  
                     $this->load->view("template/game/barracks.php",$data);
                 }else if (isset($_GET['open'])&&$_GET['open']=='main'){
                     $data['level_main']=$villages[$village]['mainBuilding'];
@@ -83,7 +86,8 @@ if (isset($_SESSION['username'])){
 }else{ ?>
 <div id="main_container">
     <div id="data_container">
-        <p>You are not logged in</p>
+        <p class="centered welcome">You are not logged in</p>
+        <div class="centered"><a href="/">Go Back</a></div>
     </div>
 </div>
 <?php } ?>

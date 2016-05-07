@@ -45,7 +45,8 @@ class User extends CI_Model{
                     'id'=>$row->id,
                     'username'=>$row->username,
                     'email'=>$row->email,
-                    'first' =>$row->first
+                    'first' =>$row->first,
+                    'current_village'=>0
                 );
             }
             $this->session->set_userdata($user);
@@ -63,7 +64,8 @@ class User extends CI_Model{
                 $user=array(
                     'id'=>$row->id,
                     'username'=>$row->username,
-                    'first' =>$row->first
+                    'first' =>$row->first,
+                    'current_village'=>0
                 );
             }
             $this->session->set_userdata($user);
