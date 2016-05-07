@@ -31,9 +31,12 @@ $(document).ready(function () {
             }
 
             $.post("game/chooseHero", {
-                type: type,
+                type: type
             }, function (data) {
-                $(location).attr("href", "game");
+                if(data=="ok") {
+                    console.log("Daaaa");
+                    $(location).attr("href", "game");
+                }
             });
         });
 

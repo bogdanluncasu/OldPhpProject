@@ -16,32 +16,53 @@ class Village extends CI_Model
 
     public function create_village($type)
     {
-        $x = rand(0, 400);
-        $y = rand(0, 400);
-        $ok = 0;
-        while ($ok == 0) {
-            $this->db->where("x", $x);
-            $this->db->where("y", $y);
-            $query = $this->db->get("tw_village");
-            if ($query->num_rows() <= 0) $ok = 1;
+        if($_SESSION['first']==0) {
+            $x = rand(0, 400);
+            $y = rand(0, 400);
+            $ok = 0;
+            while ($ok == 0) {
+                $this->db->where("x", $x);
+                $this->db->where("y", $y);
+                $query = $this->db->get("tw_village");
+                if ($query->num_rows() <= 0) $ok = 1;
+            }
+            $data = array(
+                'userId' => $_SESSION['id'],
+                'gold' => 200,
+                'mainBuilding' => 1,
+                'cazarma' => 0,
+                'ferma' => 1,
+                'mina' => 1,
+                'guvern' => 0,
+                'targ' => 0,
+                'zid' => 0,
+                'type' => $type,
+                'x' => $x,
+                'y' => $y
+            );
+            $this->db->insert('tw_village', $data);
+            $_SESSION['first']=1;
         }
-        $data = array(
-            'userId' => $_SESSION['id'],
-            'gold' => 200,
-            'mainBuilding' => 1,
-            'cazarma' => 0,
-            'ferma' => 1,
-            'mina' => 1,
-            'guvern' => 0,
-            'targ' => 0,
-            'zid' => 0,
-            'type' => $type,
-            'x' => $x,
-            'y' => $y
-        );
-        $this->db->insert('tw_village', $data);
     }
+    public function create_units(){
+        $this->db->where('userId',$_SESSION['id']);
+        $res=$this->db->get('tw_village');
+        if ($res->result()) {
+            $villageId = $res->result()[0]->villageId;
+            $data = array(
+                'villageId' => $villageId,
+                'Alchemist' => 0,
+                'BeastMaster' => 0,
+                'Earthshaker' => 0,
+                'Kunkka' => 0,
+                'Legion_Commander' => 0,
+                'Tiny' => 0,
+                'Treant_Protector' => 0
+            );
+        }
+        $this->db->insert('tw_units', $data);
 
+    }
     public function get_all_villages()
     {
         $query = $this->db->get("tw_village");

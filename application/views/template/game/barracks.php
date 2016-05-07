@@ -5,7 +5,7 @@
     <tbody>
 
     <?php if ($level_barracks > 0) {
-        for ($i = 0; $i < count($units); $i++) { ?>
+        for ($i = 0; $i < count($units); $i++) { if($level_barracks>=$units[$i]['minlevel']&&$units[$i]['type']==0){ ?>
             <tr>
                 <td>
                     <?php echo "<img src=" . $units[$i]['image'] . " title=" . $units[$i]['name'] . "/>" ?>
@@ -47,7 +47,7 @@
                                 if(timer<?php echo $i; ?><=1){
                                     $(location).attr("href","game/verify");
                                 }
-                                timer<?php echo $i; ?> -= 0.5;
+                                timer<?php echo $i; ?> -= 1;
                                 var date = new Date(timer<?php echo $i; ?> * 1000);
                                 var hours = date.getHours();
                                 var minutes = "0" + date.getMinutes();
@@ -61,7 +61,7 @@
 
             </tr>
 
-        <?php }
+        <?php }}
     } ?>
 
 

@@ -81,7 +81,6 @@ class User extends CI_Model{
         );
         $this->db->where("username",$username);
         $this->db->update("tw_users",$data);
-        $_SESSION['first']=1;
         return true;
     }
     public function get_villages($userId){

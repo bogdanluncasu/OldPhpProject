@@ -41,8 +41,10 @@ Class Game extends CI_Controller
 
     public function chooseHero()
     {
+        $this->village->create_village($this->input->post('type'));
+        $this->village->create_units();
         $this->user->first($_SESSION['username']);
-        $this->village->create_village($email = $this->input->post('type'));
+        echo "ok";
     }
     public function new_units($i)
     {
