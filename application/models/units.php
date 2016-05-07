@@ -77,6 +77,6 @@ class units
             'image'=>"resources/3.png",
             'price'=>500
         );
-        return array($treant_protector,$earth_shaker,$beast_master,$kunkka,$legion_commander,$tiny,$alchemist);
+        return array($treant_protector,$earth_shaker,$beast_master,$kunkka,$barbar,$wise,$mage);
     }
 }
