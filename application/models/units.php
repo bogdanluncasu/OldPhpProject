@@ -50,31 +50,31 @@ class units
             'image'=>"resources/graphics/units/Kunkka.png",
             'price'=>155
         );
-        $legion_commander = array('name'=> "Legion Commander",
-            'attack'=>50,
-            'defense'=>20,
-            'type'=>2,
-            'minlevel'=>15,
-            'time'=>350,
-            'image'=>"resources/graphics/units/Legion_Commander.png",
-            'price'=>500
-        );
-        $tiny = array('name'=> "Tiny",
+        $barbar = array('name'=> "Barbar",
             'attack'=>50,
             'defense'=>20,
             'type'=>1,
             'minlevel'=>15,
             'time'=>350,
-            'image'=>"resources/graphics/units/Tiny.png",
+            'image'=>"resources/1.png",
             'price'=>500
         );
-        $alchemist = array('name'=> "Alchemist",
+        $wise = array('name'=> "Wise",
             'attack'=>50,
             'defense'=>20,
-            'type'=>3,
+            'type'=>1,
             'minlevel'=>15,
             'time'=>350,
-            'image'=>"resources/graphics/units/Alchemist.png",
+            'image'=>"resources/2.png",
+            'price'=>500
+        );
+        $mage = array('name'=> "Mage",
+            'attack'=>50,
+            'defense'=>20,
+            'type'=>1,
+            'minlevel'=>15,
+            'time'=>350,
+            'image'=>"resources/3.png",
             'price'=>500
         );
         return array($treant_protector,$earth_shaker,$beast_master,$kunkka,$legion_commander,$tiny,$alchemist);

@@ -72,16 +72,16 @@ class Unitsdb extends CI_Model
             case "Kunkka":
                 $column = "Kunkka";
                 break;
-            case "Legion Commander":
-                $column = "Legion_Commander";
+            case "Wise":
+                $column = "Wise";
                 $special = 1;
                 break;
-            case "Alchemist":
-                $column = "Alchemist";
+            case "Barbar":
+                $column = "Barbar";
                 $special = 1;
                 break;
-            case "Tiny":
-                $column = "Tiny";
+            case "Mage":
+                $column = "Mage";
                 $special = 1;
                 break;
         }
