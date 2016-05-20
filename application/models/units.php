@@ -1,11 +1,4 @@
 <?php
-
-/**
- * Created by PhpStorm.
- * User: bogdan
- * Date: 4/22/16
- * Time: 7:09 PM
- */
 class units
 {
 
