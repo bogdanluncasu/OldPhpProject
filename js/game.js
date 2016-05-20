@@ -8,6 +8,11 @@ $(document).ready(function () {
             $(location).attr("href", "game/logout");
         }
     );
+    $("#home").click(
+        function () {
+            $(location).attr("href", "game");
+        }
+    );
     $("#smart,#barbar,#mage").click(function () {
         var barbaroffset = $("#barbar").offset();
         var smartoffset = $("#smart").offset();

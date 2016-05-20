@@ -59,7 +59,7 @@
         fairy.x=260;
         fairy.y=190;
         fairy.on("click",function(){
-            alert(<?php echo $villages[$village]['targ'];?>)
+            $(location).attr("href","game?open=fair");
         });
         <?php } ?>
         <?php if($villages[$village]['guvern']>0){ ?>

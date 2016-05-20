@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bogdan
- * Date: 4/1/16
- * Time: 8:28 PM
- */
+
 class User extends CI_Model{
 
     public function __construct()
@@ -12,8 +7,9 @@ class User extends CI_Model{
         parent::__construct();
     }
     public function add_user(){
+        $username=$this->input->post('username');
         $data=array(
-            'username'=>$this->input->post('username'),
+            'username'=>htmlspecialchars($username,ENT_QUOTES,'UTF-8'),
             'email'=>$this->input->post('email'),
             'password'=>md5($this->input->post('password'))
         );
@@ -30,13 +26,13 @@ class User extends CI_Model{
     }
 
     public function validate($username){
-        $this->db->where("username",$username);
+        $this->db->where("username",htmlspecialchars($username,ENT_QUOTES,'UTF-8'));
         $query=$this->db->get("tw_users");
         if($query->num_rows()>0)return false;
         return true;
     }
     public function login($username,$password){
-        $this->db->where("username",$username);
+        $this->db->where("username",htmlspecialchars($username,ENT_QUOTES,'UTF-8'));
         $this->db->where("password",md5($password));
         $query=$this->db->get("tw_users");
         if($query->num_rows()>0){

@@ -1,10 +1,13 @@
 <div id="barracks" class="building_name">
     <h2>Barracks Level- <?php echo $level_barracks; ?></h2>
+    <h2><?php echo $total_units."/".intval($level_barracks*2.7+3); ?></h2>
 </div>
 <table class="vis" style="width: 100%">
     <tbody>
 
-    <?php if ($level_barracks > 0) {
+    <?php $recruiting=$recruiting_units;
+    $gold=$villages[$village]['gold'];
+    if ($level_barracks > 0) {
         for ($i = 0; $i < count($units); $i++) { if($level_barracks>=$units[$i]['minlevel']&&$units[$i]['type']==0){ ?>
             <tr>
                 <td>
@@ -13,6 +16,7 @@
 
                 <td>
                     <div class="recruit_req">
+                        <p class="unit_data"><?php echo "Current number of units: " . $current_units[$units[$i]['name']]; ?></p>
                         <p class="unit_data"><?php echo "Price: " . $units[$i]['price'] . " gold"; ?></p>
                         <p class="unit_data"><?php echo "Time for recruiting: " . floor($units[$i]['time'] / 3600) . "h " . floor($units[$i]['time'] / 60 % 60) . "m " . floor($units[$i]['time'] % 60) . "s"; ?></p>
                     </div>
@@ -29,10 +33,15 @@
                         }
 
                     }
+                    if(floor($gold / $units[$i]['price'])>(intval($level_barracks*2.7+3)-$total_units))
+                        $val=(intval($level_barracks*2.7+3)-$total_units);
+                    else
+                        $val=floor($gold / $units[$i]['price']);
+
                     if ($unit_name=='0') { ?>
                         <form action="game/new_units/<?php echo $i; ?>" method="post">
-                            <input type="number" min="1" max="<?php echo floor($gold / $units[$i]['price']); ?>"
-                                   name="count" value="<?php echo floor($gold / $units[$i]['price']); ?>"/>
+                            <input type="number" min="1" max="<?php echo $val; ?>"
+                                   name="count" value="<?php echo $val; ?>"/>
                             <input type="submit" id="recruit<?php echo $i; ?>" value="Recruit"/>
                         </form>
                     <?php } else { ?>
