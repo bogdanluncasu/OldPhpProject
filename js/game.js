@@ -44,5 +44,37 @@ $(document).ready(function () {
                 }
             });
         });
+    $("#attack").click(
+        function () {
+            x = $("#x").val();
+            y = $("#y").val();
+            u0 = $("#u0").val();
+            u1 = $("#u1").val();
+            u2 = $("#u2").val();
+            u3 = $("#u3").val();
+            u4 = $("#u4").val();
+            u5 = $("#u5").val();
+            u6 = $("#u6").val();
+            u7 = $("#u7").val();
+            u8 = $("#u8").val();
+            u9 = $("#u9").val();
+
+
+
+            $.post("game/attack", {
+                x:x, y:y, u0:u0, u1:u1, u2:u2, u3:u3, u4:u4, u5:u5, u6:u6, u7:u7, u8:u8, u9:u9
+            }, function (data) {
+                console.log(data);
+                if(data==1) {
+                    $("#error").html("Atacul a fost instantiat!");
+                }else if(data==2){
+                    $("#error").html("Orasul nu exista!");
+                }else  $("#error").html("Nu poti ataca propriul oras!");
+
+
+            });
+        }
+    );
+
 
 });
