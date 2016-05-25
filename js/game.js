@@ -25,6 +25,7 @@ $(document).ready(function () {
             $("#fight").offset({top: mageoffset.top + 20, left: mageoffset.left});
 
     });
+    
     $("#fight").click(
         function () {
             if ($('#barbar').is(':checked')) {

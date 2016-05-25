@@ -13,6 +13,7 @@ Class Game extends CI_Controller
         $this->load->model('village');
         $this->load->model('units');
         $this->load->model('unitsdb');
+        $this->load->model('buildings');
     }
 
     public function index()
@@ -46,8 +47,12 @@ Class Game extends CI_Controller
                             $this->unitsdb->get_number_of_units($data['villages'][$village]['id'],$_SESSION['id']);
                         $this->load->view("template/game/barracks", $data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='main'){
+                            $buildings=new buildings();
+                            $data['buildings']=$buildings->getBuildings();
                             $data['level_main']=$data['villages'][$village]['mainBuilding'];
-                            $this->load->view("template/game/main",$data);
+                        $data['constructing_building']=$this ->village->getConstructingBuilding($_SESSION['id'],$data['villages'][$village]['id']);
+
+                        $this->load->view("template/game/main",$data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='chat'){
                             $this->load->view("template/game/chat",$data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='farm'){
@@ -94,6 +99,25 @@ Class Game extends CI_Controller
             if($numberOf>0)
             $this->unitsdb->add_units($numberOf, $villageId, $userId, $timestamp, $unitName, $unitPrice);
             die("<script>location.href = '../../game?open=barracks'</script>");
+        }else die("<script>location.href = '/'</script>");
+    }
+    public function upgrade($i)
+    {
+        if (isset($_SESSION['username'])) {
+            $villageId = $_SESSION['current_village'];
+            $userId = $_SESSION['id'];
+
+            $buildings = new buildings();
+            $mybuildings = $buildings->getBuildings();
+            $level_main = $this->unitsdb->levelOf('mainBuilding',$villageId);
+            $time=($buildings[$i]['time'] * (21-$level_main))-($buildings[$i]['time'] * (21-$level_main))/50;
+            $price =$buildings[$i]['price']+ $buildings[$i]['price']*$i/25;
+            $buildingName = $mybuildings[$i]['name'];
+           
+            if($this->unitsdb->levelOf($mybuildings[$i]['name'],$villageId)<$mybuildings[$i]['max_level'])
+                
+                $this->buildingsdb->upgrade( $villageId, $userId, $time, $buildingName, $price);
+            die("<script>location.href = '../../game?open=main'</script>");
         }else die("<script>location.href = '/'</script>");
     }
     public function verify()

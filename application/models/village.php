@@ -96,6 +96,23 @@ class Village extends CI_Model
         }
         return $units;
     }
+    public function getConstructingBuilding($userId,$villageId)
+    {
+        $this->db->where("userId", $userId);
+        $this->db->where("villageId", $villageId);
+        $query = $this->db->get("tw_log_buildings");
+        $buildings = array();
+        $i = 0;
+        foreach ($query->result() as $row) {
+            $building = array(
+                'buildingName' => $row->buildingName,
+                'timestamp' =>  $row->timestamp
+            );
+            $buildings[$i] = $building;
+            $i = $i + 1;
+        }
+        return $buildings;
+    }
 
 
 }
