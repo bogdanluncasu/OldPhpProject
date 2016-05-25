@@ -14,14 +14,14 @@
             main.y=109;
         stage.addChild(main);
         main.on("click",function(){
-            $(location).attr("href","game?open=main");
+            $(location).attr("href","game?open=main&village=<?php echo $village;?>");
         });
 
         var farm = new createjs.Bitmap("resources/graphics/farm.png");
         stage.addChild(farm);
         farm.x=450;
         farm.on("click",function(){
-            $(location).attr("href","game?open=farm");
+            $(location).attr("href","game?open=farm&village=<?php echo $village;?>");
         });
 
 
@@ -39,7 +39,7 @@
             cazarma.x=380;
             cazarma.y=220;
             cazarma.on("click",function(){
-                $(location).attr("href","game?open=barracks");
+                $(location).attr("href","game?open=barracks&village=<?php echo $village;?>");
             });
         <?php } ?>
 
@@ -59,7 +59,7 @@
         fairy.x=260;
         fairy.y=190;
         fairy.on("click",function(){
-            $(location).attr("href","game?open=fair");
+            $(location).attr("href","game?open=fair&village=<?php echo $village;?>");
         });
         <?php } ?>
         <?php if($villages[$village]['guvern']>0){ ?>
@@ -68,7 +68,7 @@
         gouvern.x=90;
         gouvern.y=200;
         gouvern.on("click",function(){
-            alert(<?php echo $villages[$village]['guvern'];?>)
+            $(location).attr("href","game?open=government&village=<?php echo $village;?>");
         });
         <?php } ?>
         createjs.Ticker.on("tick", stage);

@@ -1,3 +1,125 @@
+.table > tbody > tr:hover {
+    background-color: darkgray;
+}
+.table td {
+    padding: 8px;
+    line-height: 1.5;
+    vertical-align: top;
+    border-top: 1px solid #ddd
+}
+.table tr {
+    background-color: gray;
+    opacity: .8;
+}
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px
+}
+
+.searchBox input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('../resources/searchIcon.ico');
+    background-size: 25px;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    margin-bottom: 25px;
+}
+
+#coord{
+    display:inline;
+    margin-left: 30%;
+}
+#attack{
+    margin-left:20%;
+
+    width:50%;
+    height:60px;
+}
+#x,#y {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-size: 25px;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    margin-bottom: 25px;
+}
+#y{
+    background-image: url('../resources/y.png');
+}
+#x{
+    background-image: url('../resources/x.jpg');
+}
+
+.searchBox  {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+
+.searchBox input[type=text]:focus {
+    width: 100%;
+}
+
+
+.pages a{
+    display: inline;
+    color:white;
+    text-decoration: none;
+    padding-left: 5px;
+}
+#friendList{
+    position: fixed;
+    top: 100px;
+    left: 0px;
+    padding-top:15px;
+    padding-right:15px;
+    padding-left:15px;
+    padding-bottom:15px;
+    background-color:black;
+    opacity:0.6;
+    height:80%;
+    overflow-y: auto;
+    border-radius:5px;
+}
+.sideMenu{
+    position: fixed;
+    top: 100px;
+    right: 0px;
+    padding-top:15px;
+    padding-right:15px;
+    padding-left:15px;
+    padding-bottom:15px;
+    background-color:black;
+    opacity:0.6;
+    border-radius:5px;
+}
+.sideMenu a,td a{
+    display: block;
+    color:white;
+    text-decoration: none;
+}
+.sideMenu a:hover{
+    color:lightgray;
+}
+.sideMenu a:active{
+    color:white;
+}
 body {
 	 background-image:url("../resources/back.jpg");
     background-repeat: no-repeat;
@@ -27,7 +149,7 @@ body {
 #main_container {
     margin-left: auto;
     margin-right: auto;
-    width: 800px;
+    width: 80%;
     height: 800px;
     background: transparent;
 	
@@ -36,7 +158,7 @@ body {
 footer {
     margin-left: auto;
     margin-right: auto;
-    width: 800px;
+    width: 100%;
     height: 100px;
     text-align: center;
 }
@@ -47,8 +169,8 @@ footer {
    border-radius: 25px;
     margin-left: auto;
     margin-right: auto;
-    width: 800px;
-    height: 570px;
+    width: 100%;
+    height: 70%;
     overflow: auto;
 
 }
@@ -65,9 +187,15 @@ footer {
 .register_form {
     display: none;
 }
-.building_name > h2{
+.building_name > h2,#alliancename{
     color:moccasin;
     text-align: center;
+}
+#allianceName{
+    background-color: gray;
+}
+.friend{
+    display:block;
 }
 #mapCanvas,#gameCanvas {
     padding-left: 0;
@@ -82,12 +210,12 @@ footer {
     display: none;
 }
 
-.show {
+.show , input[type=button], input[type=submit]{
     background: gray;
     border-radius: 20%;
     opacity: 0.5;
 }
-.show:hover {
+.show:hover , input[type=button]:hover, input[type=submit]:hover{
     background: gainsboro;
     border-radius: 20%;
 }
@@ -133,6 +261,10 @@ footer {
 }
 p.centered.welcome{
     margin-top: 40px;
+}
+
+.center{
+    text-align: center;
 }
 
 .unit_data{

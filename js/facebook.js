@@ -1,12 +1,5 @@
-// This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response,type) {
     if(type!=0) {
-        console.log('statusChangeCallback');
-        console.log(response);
-        // The response object is returned with a status field that lets the
-        // app know the current login status of the person.
-        // Full docs on the response object can be found in the documentation
-        // for FB.getLoginStatus().
         if (response.status === 'connected') {
             FB.api('/me', function (response) {
                 $.post("site/loginFb", {
@@ -25,6 +18,34 @@ function logout() {
         $(location).attr("href", "game/logout");
     });
 }
+
+function getFriends(){
+    FB.api(
+        "/me/friends",
+        function (response) {
+            if (response && !response.error) {
+                var friends=$("#friendList");
+                $.each(response['data'],function(index,element){
+                    FB.api(
+                      "/"+element['id']+"/picture",
+                        function(data){
+                            friends.append("<div class='friend'>" +
+                                "<img src=\""+data['data']['url']+"\" title='"+element['name']+"'/></div>");
+                        }
+                    );
+                })
+            }
+        }
+    );
+};
+
+var verify=setInterval(function(){
+    if (typeof(FB) != 'undefined'
+        && FB != null ) {
+        getFriends();
+        clearInterval(verify);
+    } }, 3000);
+
 window.fbAsyncInit = function () {
     FB.init({
         appId: '1717580785194614',
@@ -38,15 +59,8 @@ window.fbAsyncInit = function () {
         statusChangeCallback(response,0);
     });
 
-};
-function login(){
-        console.log("dsad");
-        FB.login(function (response) {
-                statusChangeCallback(response,1);
-        }, {scope: 'public_profile,email,user_friends'});
-};
 
-// Load the SDK asynchronously
+};
 (function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -56,5 +70,12 @@ function login(){
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+
+
+function login(){
+        FB.login(function (response) {
+                statusChangeCallback(response,1);
+        }, {scope: 'public_profile,email,user_friends'});
+};
 
 

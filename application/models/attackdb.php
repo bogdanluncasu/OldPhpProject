@@ -51,7 +51,6 @@ class Attackdb extends CI_Model
 
 
         $timestamp = time() + intval(sqrt (pow(($x-$my_x),2) + pow(($y - $my_y),2)));
-        echo "<script>console.log(".$timestamp.")</script>";
         $data = array(
             'villageId' => $id_village,
             'timestamp' => date("Y-m-d H:i:s", $timestamp),

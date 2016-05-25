@@ -63,6 +63,42 @@ class Village extends CI_Model
         $this->db->insert('tw_units', $data);
 
     }
+    public function create_stats(){
+        $this->db->where('userId',$_SESSION['id']);
+        $res=$this->db->get('tw_village');
+        if ($res->result()) {
+            $villageId = $res->result()[0]->villageId;
+            $data = array(
+                'timestamp' => date("Y-m-d H:i:s", time()),
+                'workers' => 2,
+                'villageId' => $villageId
+            );
+        }
+        $this->db->insert('tw_stats', $data);
+
+    }
+
+    public function verify_stats($villageId,$farm){
+        $farmlevel=2+(int)((2+$farm)/5);
+        $this->db->where('villageId',$villageId);
+        $result=$this->db->get('tw_stats');
+        foreach($result->result() as $res) {
+            if((time()-strtotime($res->timestamp))>120){
+                $gold=((time()-strtotime($res->timestamp))/700)*$res->workers;
+                if($gold>0) {
+                    $this->db->set("gold", "gold" . " + " . $gold, FALSE);
+                    $this->db->where("villageId", $villageId);
+                    $this->db->update("tw_village");
+                    $this->db->set("timestamp", "'" . date("Y-m-d H:i:s", time()) . "'", FALSE);
+                    $this->db->set("workers", $farmlevel, FALSE);
+                    $this->db->where("villageId", $villageId);
+                    $this->db->update("tw_stats");
+                }
+            }
+
+        }
+    }
+
     public function get_all_villages()
     {
         $query = $this->db->get("tw_village");

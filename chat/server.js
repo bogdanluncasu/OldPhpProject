@@ -5,8 +5,6 @@ io=require("socket.io").listen(server);
 nicknames=[];
 server.listen(8888);
 
-console.log('Salutare');
-
 io.sockets.on('connection',function(socket){
 	
 	socket.on('send_msg',function(data){
