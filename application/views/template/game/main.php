@@ -5,7 +5,7 @@
 <table class="vis" style="width: 100%">
     <tbody>
 
-    <?php $recruiting=$recruiting_units;
+    <?php 
     $gold=$villages[$village]['gold'];
 
         for ($i = 0; $i < count($buildings); $i++) { if($level_main>=$buildings[$i]['min_level']){ 

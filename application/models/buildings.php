@@ -1,5 +1,5 @@
 <?php
-class buildings
+class Buildings
 {
 
     public function __construct()

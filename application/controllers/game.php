@@ -16,6 +16,7 @@ Class Game extends CI_Controller
         $this->load->model('attackdb');
         $this->load->model('fair');
         $this->load->model('itemdb');
+        $this->load->model('buildings');
     }
 
     public function index()
@@ -55,6 +56,8 @@ Class Game extends CI_Controller
                         $this->load->view("template/game/attack",$data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='main'){
                             $data['level_main']=$data['villages'][$village]['mainBuilding'];
+                            $buildings=new buildings();
+                            $data['buildings']=$buildings->getBuildings();
                             $this->load->view("template/game/main",$data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='government'){
                         $data['level_government']=$data['villages'][$village]['guvern'];
