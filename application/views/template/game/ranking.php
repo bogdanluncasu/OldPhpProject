@@ -1,16 +1,7 @@
 <?php
-function cmp($a, $b)
-{
-    return $a["points"] > $b["points"];
-}
 
 $users_per_page = 5;
-if(isset($_POST['json'])){
-    $users=$_POST['json'];
-}
-usort($users, "cmp");
-$r_users = array_reverse($users);
-
+$r_users = $users;
 $start = $users_per_page * ((isset($_GET['next'])) ? intval($_GET['next']) : 0);
 $stop = (count($r_users) - $start > $users_per_page) ? $start + $users_per_page : count($r_users);
 echo "<div class=\"searchBox\">

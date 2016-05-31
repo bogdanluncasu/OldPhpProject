@@ -18,9 +18,16 @@ Class Game extends CI_Controller
         $this->load->model('itemdb');
         $this->load->model('buildings');
     }
-
+    function errorHandler($errno, $errstr, $errfile, $errline)
+    {
+        $file = 'logs.txt';
+        $current = file_get_contents($file);
+        $current .= $errstr."\n";
+        file_put_contents($file, $current);
+    }
     public function index()
     {
+        set_error_handler(array('self','errorHandler'),E_ALL);
         $this->home();
     }
 
@@ -78,7 +85,13 @@ Class Game extends CI_Controller
                         $data['equiped']=$this->itemdb->get_equiped_item($data['villages'][$village]['id']);
                         $this->load->view("template/game/fair.php", $data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='ranking') {
+                        function cmp($a, $b)
+                        {
+                            return $a["points"] > $b["points"];
+                        }
                         $data['users'] = $this->user->getRanking();
+                        usort($data['users'], "cmp");
+                        $data['users']=array_reverse($data['users']);
                         $this->load->view("template/game/ranking.php", $data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='villages') {
                         $this->load->view("template/game/villages.php", $data);
@@ -103,7 +116,13 @@ Class Game extends CI_Controller
     }
     public function getRankings(){
         if(isset($_SESSION['username'])){
-            echo json_encode(array_values($this->user->getRanking()));
+            $users=$this->user->getRanking();
+            function cmp($a, $b)
+            {
+                return $a["points"] > $b["points"];
+            }
+            usort($users, "cmp");
+            echo json_encode(array_values(array_reverse($users)));
         }
     }
     public function removeFromAlliance(){
