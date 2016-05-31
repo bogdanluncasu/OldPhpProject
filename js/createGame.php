@@ -49,7 +49,7 @@
         zid.x=390;
         zid.y=300;
         zid.on("click",function(){
-            alert(<?php echo $villages[$village]['zid'];?>)
+            $(location).attr("href","game?open=wall&village=<?php echo $village;?>");
         });
         <?php } ?>
 
