@@ -9,16 +9,74 @@ class buildingsdb extends CI_Model
         parent::__construct();
     }
 
-    public function upgrade( $villageId, $userId, $time, $buildingName, $price)
+    public function upgrade($villageId, $userId, $time, $buildingName, $price)
     {
+        $this->load->model('buildings');
+        $buildings = new buildings();
+        $buildings = $buildings->getBuildings();
 
-           
-        
+
+
+        $price= intval($price);
+        foreach ($buildings as $building) {
+            echo $building['name'];
+            if ($buildingName == $building['name']) { echo "aisea";
+                $this->db->where('villageId', $villageId);
+                $res = $this->db->get('tw_village');
+                $result = $res->result();
+                if ($result[0]->$buildingName < $building['max_level'] && $result[0]->gold >= $price) {
+                    $data = array(
+                        "villageId" => $villageId,
+                        "userId" => $userId,
+                        "timestamp" => date("Y-m-d H:i:s", $time),
+                        "buildingName" => $buildingName,
+                        "type"=>1);
+                    $this->db->insert("tw_log_buildings", $data);
+                    $this->db->where("villageId", $villageId);
+                    $this->db->set("gold", "gold-" . $price,FALSE);
+                    $this->db->update("tw_village");
+                }
+            }
+        }
+
+
+    }
+    public function downgrade($villageId, $userId, $buildingName)
+    {
+        $this->load->model('buildings');
+        $buildings=new buildings();
+        $buildings = $buildings->getBuildings();
+
+        foreach($buildings as $building)
+        {
+            if($buildingName==$building['name'])
+            {echo "asd";
+                $this->db->where('villageId',$villageId);
+                $res=$this->db->get('tw_village');
+                $result=$res->result();
+                $result = (array)($result[0]);
+
+                if($result[$buildingName]>1){
+
+                    $data=array(
+                        "villageId"=>$villageId,
+                        "userId"=>$userId,
+                        "timestamp" => date("Y-m-d H:i:s", time()+1),
+                        "buildingName"=>$buildingName,
+                        "type"=>0);
+                    $this->db->insert("tw_log_buildings", $data);
+
+                }
+            }
+        }
+
+
     }
 
-    private function levelOf($building,$villageId){
+    public function levelOf($building, $villageId)
+    {
         $this->db->select($building);
-        $this->db->where("villageId",$villageId);
+        $this->db->where("villageId", $villageId);
         $query = $this->db->get("tw_village");
         return $query->result()[0]->$building;
 
@@ -28,148 +86,51 @@ class buildingsdb extends CI_Model
     {
         $this->db->where("villageId", $villageId);
         $this->db->where("userId", $userId);
-        $query = $this->db->get("tw_log_units");
+        $query = $this->db->get("tw_log_buildings");
         foreach ($query->result() as $row) {
             if (strtotime($row->timestamp) - time() <= 0) {
-                $this->deleteRecruit($row->id);
-                $this->updateVillage($villageId, $row->unitName, $row->numberOf);
+                $this->deleteConstruct($row->id);
+                $this->updateVillage($villageId, $row->buildingName, $row->type);
             }
         }
     }
 
-    private function deleteRecruit($id)
+    private function deleteConstruct($id)
     {
         $this->db->where("id", $id);
-        $this->db->delete("tw_log_units");
+        $this->db->delete("tw_log_buildings");
     }
 
-    private function updateVillage($villageId, $unitName, $numberOf)
+    private function updateVillage($villageId, $buildingName, $type)
     {
-        $column = "xxx";
-        $special = 0;
-        switch ($unitName) {
-            case "Treant Protector":
-                $column = "Treant_Protector";
-                break;
-            case "Earth Shaker":
-                $column = "Earthshaker";
-                break;
-            case "Beast Master":
-                $column = "BeastMaster";
-                break;
-            case "Kunkka":
-                $column = "Kunkka";
-                break;
-            case "Wise":
-                $column = "Wise";
-                $special = 1;
-                break;
-            case "Barbar":
-                $column = "Barbar";
-                $special = 1;
-                break;
-            case "Mage":
-                $column = "Mage";
-                $special = 1;
-                break;
+
+        if ($type == 1)
+            $this->db->set($buildingName, $buildingName . " +1 ",FALSE);
+        else {
+            $this->db->set($buildingName, $buildingName . " -1 ",FALSE);
+
         }
-        if ($special == 0) {
-            $this->db->set($column, $column . " + " . $numberOf, FALSE);
-            $this->db->where("villageId", $villageId);
-            $this->db->update("tw_units");
-        } else if ($special == 1) {
-            if (!exists($villageId, $column)) {
-                $this->db->set($column, $column . " = 1", FALSE);
-                $this->db->where("villageId", $villageId);
-                $this->db->update("tw_units");
-            }
-        }
+        $this->db->where("villageId", $villageId);
+        $this->db->update("tw_village");
     }
 
-    public function get_number_of_units($villageId,$id)
-    {
-        $this->db->select('Alchemist,
-        BeastMaster,
-        Earthshaker,
-        Kunkka,
-        Legion_Commander,
-        Tiny,
-        Treant_Protector');
-        $this->db->from('tw_users');
-        $this->db->join('tw_village', 'tw_users.id=tw_village.userId');
-        $this->db->join('tw_units', 'tw_units.villageId=tw_village.villageId');
-        $this->db->where("tw_users.id", $id);
-        $this->db->where("tw_village.villageId", $villageId);
-        $query = $this->db->get();
-        $result=0;
-        foreach($query->result() as $row){
-            $result+=$row->Alchemist;
-            $result+=$row->BeastMaster;
-            $result+=$row->Earthshaker;
-            $result+=$row->Legion_Commander;
-            $result+=$row->Tiny;
-            $result+=$row->Treant_Protector;
-            $result+=$row->Kunkka;
-
-        }
-        return $result;
-    }
-
-
-    public function get_current_units($villageId,$id)
-    {
-        $this->db->select('Alchemist,
-        BeastMaster,
-        Earthshaker,
-        Kunkka,
-        Legion_Commander,
-        Tiny,
-        Treant_Protector');
-        $this->db->from('tw_users');
-        $this->db->join('tw_village', 'tw_users.id=tw_village.userId');
-        $this->db->join('tw_units', 'tw_units.villageId=tw_village.villageId');
-        $this->db->where("tw_users.id", $id);
-        $this->db->where("tw_village.villageId", $villageId);
-        $query = $this->db->get();
-        $result=array();
-        foreach($query->result() as $row){
-            $result['Alchemist']=$row->Alchemist;
-            $result['Beast Master']=$row->BeastMaster;
-            $result['Earth Shaker']=$row->Earthshaker;
-            $result['Legion Commander']=$row->Legion_Commander;
-            $result['Tiny']=$row->Tiny;
-            $result['Treant Protector']=$row->Treant_Protector;
-            $result['Kunkka']=$row->Kunkka;
-        }
-        return $result;
-
-    }
-
-
-    private function exists($villageId, $unitName)
+    public function getBuildings($villageId, $id)
     {
         $this->db->where("villageId", $villageId);
-        $this->db->where($unitName, 0);
-        $query = $this->db->get("tw_units");
-        if ($query->num_rows() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    public function get_number_of_recruit_units($villageId,$userId)
-    {
-        $this->db->where("userId", $userId);
-        $this->db->where("villageId", $villageId);
-        $query = $this->db->get("tw_log_units");
+        $this->db->where("userId", $id);
+        $buildings = $this->db->get("tw_log_buildings");
+        $array = array();
+        $arrays = array();
         $i = 0;
-        foreach ($query->result() as $row) {
-            $i+=$row->numberOf;
+        foreach ($buildings->result() as $building) {
+            $array['timestamp'] = $building->timestamp;
+            $array['villageId'] = $building->villageId;
+            $array['buildingName'] = $building->buildingName;
+            $arrays[$i] = $array;
+            $i++;
         }
-        return $i;
+        return $arrays;
+
 
     }
-
 }
