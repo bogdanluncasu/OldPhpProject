@@ -27,10 +27,8 @@
         echo "</tbody></table>"; ?>
 
         <input type="button" value="Attack" id = "attack" />
-  
-
 </div>
-<div id = "error"></div>
+
 
 <?php
 
