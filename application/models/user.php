@@ -289,5 +289,11 @@ class User extends CI_Model{
             }
         }
     }
+    public function getVillages($id){
+        $this->db->where("userId",$id);
+        $res=$this->db->get("tw_village");
+        return $res->result();
+        
+    }
 
 }

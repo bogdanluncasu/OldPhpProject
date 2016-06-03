@@ -14,48 +14,39 @@ $(document).ready(function () {
             $(location).attr("href", "game");
         }
     );
-    $("#search").on('input', function (){
-        var search=$("#search");
-        var pages=$("#rankPages");
-        var tbody=$("#table tbody");
-        $.post("game/getRankings", {
-        }, function (data) {
+    $("#search").on('input', function () {
+        var search = $("#search");
+        var pages = $("#rankPages");
+        var tbody = $("#table tbody");
+        $.post("game/getRankings", {}, function (data) {
             var array = JSON.parse(data);
-            var result=JSON.parse("[]");
-            var el=0;
-            $.each(array, function(i, v) {
-                if ((v.username).indexOf(search.val())!=-1) {
-                    result[el]=v;
+            var result = JSON.parse("[]");
+            var el = 0;
+            $.each(array, function (i, v) {
+                if ((v.username).indexOf(search.val()) != -1) {
+                    result[el] = v;
                     el++;
                 }
             });
-            $.post("game?open=ranking", {
-                json: result
-            }, function (data) {
-                var parser=new window.DOMParser();
-                var xml=parser.parseFromString(data, "text/xml");
-                path="/html/body/div/div/table/tbody";
-                if (document.implementation && document.implementation.createDocument)
-                {
-                    var nodes=xml.evaluate(path, xml, null, XPathResult.ANY_TYPE, null);
-                    var result=nodes.iterateNext();
-                    if(result!=null) {
-                        var html = $(result);
-                        tbody.replaceWith(html.prop('outerHTML'));
-                    }else{
-                        alert("Your browser does not support search widget");
-                    }
-                }
 
-            });
+            var tbodyr = "<tbody>"
+
+
+            for (i = 0; i < result.length; i++) {
+                tbodyr += "<tr><td>" + (i + 1) + "</td><td><a href='game.php?profile=" + result[i]['userId']
+                    + "'>" + result[i]['username'] + "</a></td><td>" + result[i]['points']
+                    + "</td></tr>";
+
+            }
+            tbodyr += "</tbody>";
+            var html = $(tbodyr);
+            tbody.replaceWith(html.prop('outerHTML'));
         });
 
 
-
-
-
-       console.log(search.val());
+        console.log(search.val());
     });
+
     $("#smart,#barbar,#mage").click(function () {
         var barbaroffset = $("#barbar").offset();
         var smartoffset = $("#smart").offset();
@@ -94,7 +85,7 @@ $(document).ready(function () {
                 name:name
             }, function (data) {
                 if(data==1) {
-                    location.href = '../../game?open=alliance';
+                    location.reload();
                 }else{
                     alert("Alliance exists");
                 }
@@ -152,7 +143,7 @@ equip=function(item){
     $.post("game/equipItem", {
         item:item
     }, function (data) {
-            location.href = '../../game?open=fair';
+        location.reload();
         });
 }
 removeFromAlliance=function(i,id){
@@ -176,20 +167,20 @@ addToAlliance=function(i,id){
     $.post("game/addToAlliance", {
         id:id
     }, function (data) {
-        location.href = '../../game?open=alliance';
+        location.reload();
     });
 }
 apply=function(id){
     $.post("game/applyToAlliance", {
         id:id
     }, function (data) {
-        location.href = '../../game?open=alliance';
+        location.reload();
     });
 }
 abolishAlliance=function(id){
     $.post("game/abolishAlliance", {
         id:id
     }, function (data) {
-        location.href = '../../game?open=alliance';
+        location.reload();
     });
 }

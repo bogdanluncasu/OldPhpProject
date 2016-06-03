@@ -68,5 +68,5 @@
         stage.addChild(village);
     }
 
-
+}
 </script>

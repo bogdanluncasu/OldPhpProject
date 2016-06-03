@@ -108,6 +108,9 @@ Class Game extends CI_Controller
                             $data['allAlliances']=$this->user->getAllAlliances();
                         }
                         $this->load->view("template/game/alliance.php", $data);
+                    }else if (isset($_GET['profile'])) {
+                        $data['userVillages']=$this->user->getVillages(intval($_GET['profile']));
+                        $this->load->view("template/game/profile.php", $data);
                     }else
                         $this->load->view("template/game/village");
                     //$this->load->view("template/game/end");
@@ -136,8 +139,8 @@ Class Game extends CI_Controller
                 
                 if($b!=0) {
 
-                    $level=$this->buildingsdb->levelOf("mainBuilding",$_SESSION['current_village']);
-                    $price = $b['price'] + $b['price'] *$level / 25;
+                    $level=$this->buildingsdb->levelOf($b['name'],$_SESSION['current_village']);
+                    $price = $b['price']*$level + $b['price'] / 25;
                     $time=time()+($b['time'] * (21-$level))-($b['time'] * (21-$level))/50;
 
                     $this->buildingsdb->upgrade($_SESSION['current_village'], $_SESSION['id'], $time, $_POST['buildingName'], $price);

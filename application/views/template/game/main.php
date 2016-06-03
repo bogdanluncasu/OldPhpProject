@@ -9,7 +9,9 @@
     $gold=$villages[$village]['gold'];
 
         for ($i = 0; $i < count($buildings); $i++) { if($level_main>=$buildings[$i]['min_level']){
-            $price =$buildings[$i]['price']+ $buildings[$i]['price']*$level_main/25;?>
+            $price =$buildings[$i]['price']*
+                $villages[(isset($_POST['village'])?$_POST['village']:0)][$buildings[$i]['name']]
+                + $buildings[$i]['price']/25;?>
             <tr>
                 <td>
                     <?php echo "<img src=" . $buildings[$i]['image'] . " title=" . $buildings[$i]['name'] . "/>" ?>
@@ -29,7 +31,6 @@
 
                     <?php
                     $buildingName='0';
-                    $buildingTime='0';
                     foreach($constructing_building as $building)
                     {
                         if($building['buildingName']==$buildings[$i]['name'])
