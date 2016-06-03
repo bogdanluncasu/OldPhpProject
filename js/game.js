@@ -94,7 +94,7 @@ $(document).ready(function () {
                 name:name
             }, function (data) {
                 if(data==1) {
-                    location.reload();
+                    location.href = '../../game?open=alliance';
                 }else{
                     alert("Alliance exists");
                 }
@@ -119,14 +119,11 @@ $(document).ready(function () {
             }, function (data) {
                 console.log(data);
                 if(data==1) {
-                    alert("Atacul a fost instantiat!");
-                    location.reload();
+                    $("#error").html("Atacul a fost instantiat!");
                 }else if(data==2){
                     alert("Empty coordinates..");
                 }else if(data==4){
                     alert("You need more units..");
-                }else if(data == 3){
-                    alert("Nu poti ataca un user din aceeasi alianta cu tine!");
                 }else  alert("You can not attack your own town!");
             });
         }
@@ -137,7 +134,7 @@ equip=function(item){
     $.post("game/equipItem", {
         item:item
     }, function (data) {
-            location.reload();
+            location.href = '../../game?open=fair';
         });
 }
 removeFromAlliance=function(i,id){
@@ -161,20 +158,20 @@ addToAlliance=function(i,id){
     $.post("game/addToAlliance", {
         id:id
     }, function (data) {
-        location.reload();
+        location.href = '../../game?open=alliance';
     });
 }
 apply=function(id){
     $.post("game/applyToAlliance", {
         id:id
     }, function (data) {
-        location.reload();
+        location.href = '../../game?open=alliance';
     });
 }
 abolishAlliance=function(id){
     $.post("game/abolishAlliance", {
         id:id
     }, function (data) {
-        location.reload();
+        location.href = '../../game?open=alliance';
     });
 }

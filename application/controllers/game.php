@@ -21,7 +21,6 @@ Class Game extends CI_Controller
 
     public function index()
     {
-        $this->attackdb->verify_time_attack($_SESSION['id']);
         $this->home();
     }
 
@@ -280,14 +279,11 @@ Class Game extends CI_Controller
         if($ok == 0)
             echo 4;
         else if ($this->attackdb->verify_town($x,$y, $_SESSION['id'])){
-            echo 5;
-        }else if($this->attackdb->verify_alliance($x,$y))
             echo 3;
-        else if($this->attackdb->verify_coord($x,$y)) {
-            $units = array($u0,$u1,$u2,$u3,$u4,$u5,$u6,$u7,$u8,$u9);
-            $this->attackdb->attack_town($x, $y, $_SESSION['id'], $_SESSION['current_village'], $units);
+        }else if($this->attackdb->verify_coord($x,$y)) {
+            $this->attackdb->attack_town($x, $y, $_SESSION['id'], $_SESSION['current_village']);
             echo 1;
-        } else {
+        }else {
             echo 2;
         }
     }
