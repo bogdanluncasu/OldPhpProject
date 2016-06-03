@@ -94,7 +94,7 @@ $(document).ready(function () {
                 name:name
             }, function (data) {
                 if(data==1) {
-                    location.href = '../../game?open=alliance';
+                    location.reload();
                 }else{
                     alert("Alliance exists");
                 }
@@ -122,7 +122,9 @@ $(document).ready(function () {
                     $("#error").html("Atacul a fost instantiat!");
                 }else if(data==2){
                     alert("Empty coordinates..");
-                }else if(data==4){
+                }else if(data==3)
+                    alert("Nu poti sa iti ataci aliatii!");
+                else if(data==4){
                     alert("You need more units..");
                 }else  alert("You can not attack your own town!");
             });
@@ -134,7 +136,7 @@ equip=function(item){
     $.post("game/equipItem", {
         item:item
     }, function (data) {
-            location.href = '../../game?open=fair';
+        location.reload();
         });
 }
 removeFromAlliance=function(i,id){
@@ -158,20 +160,20 @@ addToAlliance=function(i,id){
     $.post("game/addToAlliance", {
         id:id
     }, function (data) {
-        location.href = '../../game?open=alliance';
+        location.reload();
     });
 }
 apply=function(id){
     $.post("game/applyToAlliance", {
         id:id
     }, function (data) {
-        location.href = '../../game?open=alliance';
+        location.reload();
     });
 }
 abolishAlliance=function(id){
     $.post("game/abolishAlliance", {
         id:id
     }, function (data) {
-        location.href = '../../game?open=alliance';
+        location.reload();
     });
 }

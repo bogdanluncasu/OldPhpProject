@@ -17,10 +17,22 @@ Class Game extends CI_Controller
         $this->load->model('fair');
         $this->load->model('itemdb');
         $this->load->model('buildings');
+        $this->load->model('buildingsdb');
     }
-
+    function errorHandler($errno, $errstr, $errfile, $errline)
+    {
+        $file = 'logs.txt';
+        $current = file_get_contents($file);
+        $current .= $errstr."\n";
+        file_put_contents($file, $current);
+    }
     public function index()
     {
+
+        $this->attackdb->verify_time_attack($_SESSION['id']);
+
+        set_error_handler(array('self','errorHandler'),E_ALL);
+
         $this->home();
     }
 
@@ -51,12 +63,17 @@ Class Game extends CI_Controller
                         $data['total_units'] =
                             $this->unitsdb->get_number_of_units($data['villages'][$village]['id'],$_SESSION['id']);
                         $this->load->view("template/game/barracks", $data);
+                    }else if (isset($_GET['open']) && $_GET['open'] == 'wall') {
+                        $data['level_wall'] = $data['villages'][$village]['zid'];
+
+                        $this->load->view("template/game/wall", $data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='attack'){
                         $data['current_attacks'] = $this->attackdb->get_all_attacks($_SESSION['id']);
                         $this->load->view("template/game/attack",$data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='main'){
                             $data['level_main']=$data['villages'][$village]['mainBuilding'];
                             $buildings=new buildings();
+                            $data['constructing_building']= $this->buildingsdb->getBuildings($_SESSION['current_village'],$_SESSION['id']);
                             $data['buildings']=$buildings->getBuildings();
                             $this->load->view("template/game/main",$data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='government'){
@@ -78,7 +95,13 @@ Class Game extends CI_Controller
                         $data['equiped']=$this->itemdb->get_equiped_item($data['villages'][$village]['id']);
                         $this->load->view("template/game/fair.php", $data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='ranking') {
+                        function cmp($a, $b)
+                        {
+                            return $a["points"] > $b["points"];
+                        }
                         $data['users'] = $this->user->getRanking();
+                        usort($data['users'], "cmp");
+                        $data['users']=array_reverse($data['users']);
                         $this->load->view("template/game/ranking.php", $data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='villages') {
                         $this->load->view("template/game/villages.php", $data);
@@ -89,6 +112,9 @@ Class Game extends CI_Controller
                             $data['allAlliances']=$this->user->getAllAlliances();
                         }
                         $this->load->view("template/game/alliance.php", $data);
+                    }else if (isset($_GET['profile'])) {
+                        $data['userVillages']=$this->user->getVillages(intval($_GET['profile']));
+                        $this->load->view("template/game/profile.php", $data);
                     }else
                         $this->load->view("template/game/village");
                     //$this->load->view("template/game/end");
@@ -101,9 +127,63 @@ Class Game extends CI_Controller
         $this->load->view("template/game/end");
         $this->load->view("template/game/footer");
     }
+    public function upgrade()
+    {
+        if(isset($_SESSION['username']))
+        {
+            if(isset($_POST['buildingName']))
+            {   $buildings=$this->buildings->getBuildings();
+                $b=0;
+                foreach ($buildings as $building)
+                {
+                    
+                    if($building['name']==$_POST['buildingName'])
+                        $b=$building;
+                }
+                
+                if($b!=0) {
+
+                    $level=$this->buildingsdb->levelOf($b['name'],$_SESSION['current_village']);
+                    $price = $b['price']*$level + $b['price'] / 25;
+                    $time=time()+($b['time'] * (21-$level))-($b['time'] * (21-$level))/50;
+
+                    $this->buildingsdb->upgrade($_SESSION['current_village'], $_SESSION['id'], $time, $_POST['buildingName'], $price);
+                }
+                    
+            }
+        }
+    }
+    public function downgrade()
+    {
+        if(isset($_SESSION['username']))
+        {
+            if(isset($_POST['buildingName']))
+            {   $buildings=$this->buildings->getBuildings();
+                $b=0;
+                foreach ($buildings as $building)
+                {
+
+                    if($building['name']==$_POST['buildingName'])
+                        $b=$building;
+                }
+
+
+                if($b!=0)
+                    $this->buildingsdb->downgrade($_SESSION['current_village'], $_SESSION['id'], $_POST['buildingName']);
+                
+
+            }
+        }
+    }
     public function getRankings(){
         if(isset($_SESSION['username'])){
-            echo json_encode(array_values($this->user->getRanking()));
+            $users=$this->user->getRanking();
+            function cmp($a, $b)
+            {
+                return $a["points"] > $b["points"];
+            }
+            usort($users, "cmp");
+            echo json_encode(array_values(array_reverse($users)));
         }
     }
     public function removeFromAlliance(){
@@ -199,6 +279,16 @@ Class Game extends CI_Controller
             die("<script>location.href = '../game?open=barracks&village=".$this->village."'</script>");
         }else die("<script>location.href = '/'</script>");
     }
+    public function verifyBuildings()
+    {
+        if (isset($_SESSION['username'])) {
+            $villageId = $_SESSION['current_village'];
+            $userId = $_SESSION['id'];
+            $this->buildingsdb->verify($villageId, $userId);
+            $this->set_village();
+            die("<script>location.href = '../game?open=main&village=".$this->village."'</script>");
+        }else die("<script>location.href = '/'</script>");
+    }
     public function verify_governers()
     {
         if (isset($_SESSION['username'])) {
@@ -279,11 +369,14 @@ Class Game extends CI_Controller
         if($ok == 0)
             echo 4;
         else if ($this->attackdb->verify_town($x,$y, $_SESSION['id'])){
+            echo 5;
+        }else if($this->attackdb->verify_alliance($x,$y))
             echo 3;
-        }else if($this->attackdb->verify_coord($x,$y)) {
-            $this->attackdb->attack_town($x, $y, $_SESSION['id'], $_SESSION['current_village']);
+        else if($this->attackdb->verify_coord($x,$y)) {
+            $units = array($u0,$u1,$u2,$u3,$u4,$u5,$u6,$u7,$u8,$u9);
+            $this->attackdb->attack_town($x, $y, $_SESSION['id'], $_SESSION['current_village'], $units);
             echo 1;
-        }else {
+        } else {
             echo 2;
         }
     }
