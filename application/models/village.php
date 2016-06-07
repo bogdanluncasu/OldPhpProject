@@ -79,18 +79,20 @@ class Village extends CI_Model
     }
 
     public function verify_stats($villageId,$farm){
-        $farmlevel=2+(int)((2+$farm)/5);
         $this->db->where('villageId',$villageId);
         $result=$this->db->get('tw_stats');
+        $this->db->where('villageId',$villageId);
+        $result_w=$this->db->get('tw_village');
         foreach($result->result() as $res) {
             if((time()-strtotime($res->timestamp))>120){
-                $gold=((time()-strtotime($res->timestamp))/700)*$res->workers;
+                $gold=((time()-strtotime($res->timestamp))/700)*($res->workers>0)?$res->workers:1;
+                $gold+=$gold*$result_w->result()[0]->mina/50;
                 if($gold>0) {
                     $this->db->set("gold", "gold" . " + " . $gold, FALSE);
                     $this->db->where("villageId", $villageId);
                     $this->db->update("tw_village");
                     $this->db->set("timestamp", "'" . date("Y-m-d H:i:s", time()) . "'", FALSE);
-                    $this->db->set("workers", $farmlevel, FALSE);
+                    $this->db->set("workers", $result_w->result()[0]->mineWorkers, FALSE);
                     $this->db->where("villageId", $villageId);
                     $this->db->update("tw_stats");
                 }

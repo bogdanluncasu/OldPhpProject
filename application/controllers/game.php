@@ -19,6 +19,7 @@ Class Game extends CI_Controller
         $this->load->model('buildings');
         $this->load->model('buildingsdb');
     }
+    /** Handler ce se ocupa de warninguri (Securitate) */
     function errorHandler($errno, $errstr, $errfile, $errline)
     {
         $file = 'logs.txt';
@@ -26,16 +27,14 @@ Class Game extends CI_Controller
         $current .= $errstr."\n";
         file_put_contents($file, $current);
     }
+    /** Functie ce se este apelata prima data de catre controller */
     public function index()
     {
-
-        $this->attackdb->verify_time_attack($_SESSION['id']);
-
         set_error_handler(array('self','errorHandler'),E_ALL);
-
         $this->home();
     }
 
+    /** Tratam fiecare cerere de tip get in parte. */
     private function home()
     {
         $this->load->view("template/game/header");
@@ -47,7 +46,8 @@ Class Game extends CI_Controller
             $data['recruiting_units']=$this ->village->getRecruitUnits($_SESSION['id'],$_SESSION['current_village']);
 
             if (isset($_SESSION['username'])) {
-                if ($_SESSION['first'] != 0) {
+                if ($_SESSION['first'] != 0&&count($data['villages'])>0) {
+                    $this->attackdb->verify_time_attack($_SESSION['id']);
                     if(!isset($_GET['village'])||intval($_GET['village'])>=count($data['villages']))
                         $village=0;
                     else $village=intval($_GET['village']);
@@ -65,11 +65,13 @@ Class Game extends CI_Controller
                         $this->load->view("template/game/barracks", $data);
                     }else if (isset($_GET['open']) && $_GET['open'] == 'wall') {
                         $data['level_wall'] = $data['villages'][$village]['zid'];
-
                         $this->load->view("template/game/wall", $data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='attack'){
                         $data['current_attacks'] = $this->attackdb->get_all_attacks($_SESSION['id']);
                         $this->load->view("template/game/attack",$data);
+                    }else if (isset($_GET['open'])&&$_GET['open']=='reports'){
+                        $data['reports'] = $this->attackdb->get_all_reports($_SESSION['id']);
+                        $this->load->view("template/game/reports",$data);
                     }else if (isset($_GET['open'])&&$_GET['open']=='main'){
                             $data['level_main']=$data['villages'][$village]['mainBuilding'];
                             $buildings=new buildings();
@@ -127,6 +129,12 @@ Class Game extends CI_Controller
         $this->load->view("template/game/end");
         $this->load->view("template/game/footer");
     }
+
+    /**
+     * Face upgrade la cladiri .
+     * Se verifica daca cladirea ceruta exista in enviromentul jocului.
+     * (Tratam cererile de tip post invalide)
+     */
     public function upgrade()
     {
         if(isset($_SESSION['username']))
@@ -136,11 +144,9 @@ Class Game extends CI_Controller
                 $b=0;
                 foreach ($buildings as $building)
                 {
-                    
                     if($building['name']==$_POST['buildingName'])
                         $b=$building;
                 }
-                
                 if($b!=0) {
 
                     $level=$this->buildingsdb->levelOf($b['name'],$_SESSION['current_village']);
@@ -153,6 +159,11 @@ Class Game extends CI_Controller
             }
         }
     }
+    /**
+     * Face downgrade la cladiri .
+     * Se verifica daca cladirea ceruta exista in enviromentul jocului.
+     * (Tratam cererile de tip post invalide)
+     */
     public function downgrade()
     {
         if(isset($_SESSION['username']))
@@ -162,19 +173,18 @@ Class Game extends CI_Controller
                 $b=0;
                 foreach ($buildings as $building)
                 {
-
                     if($building['name']==$_POST['buildingName'])
                         $b=$building;
                 }
-
-
                 if($b!=0)
                     $this->buildingsdb->downgrade($_SESSION['current_village'], $_SESSION['id'], $_POST['buildingName']);
-                
-
             }
         }
     }
+    /**
+     * Returneaza un json cu utilizatorii ordonati in functie de punctaj
+     * Folosit la cautare...
+     */
     public function getRankings(){
         if(isset($_SESSION['username'])){
             $users=$this->user->getRanking();
@@ -186,12 +196,14 @@ Class Game extends CI_Controller
             echo json_encode(array_values(array_reverse($users)));
         }
     }
+    /** Elimina un user din alianta */
     public function removeFromAlliance(){
         if(isset($_SESSION['username'])){
             $id=$this->input->post("id");
             $this->user->removeFromAlliance($id);
         }
     }
+    /** Adauga un user in alianta */
     public function addToAlliance(){
         if(isset($_SESSION['username'])){
             $id=$this->input->post("id");
@@ -222,9 +234,10 @@ Class Game extends CI_Controller
             $this->user->removeRequestFromAlliance($id);
         }
     }
+    /** Apelata dupa prima alegere a eroului */
     public function chooseHero()
     {
-        if (isset($_SESSION['username'])) {
+        if (isset($_SESSION['username'])&&isset($_SESSION['first'])&&$_SESSION['first']==0) {
             $this->village->create_village($this->input->post('type'));
             $this->village->create_units();
             $this->village->create_stats();
@@ -233,6 +246,7 @@ Class Game extends CI_Controller
         }else die("<script>location.href = '/'</script>");
     }
 
+    /** Recruteaza unitati */
     public function new_units($i)
     {
         if (isset($_SESSION['username'])&&isset($_POST['count'])) {
@@ -340,18 +354,18 @@ Class Game extends CI_Controller
     }
     public function attack()
     {
-        $x = $this->input->post('x');
-        $y = $this->input->post('y');
-        $u0 = $this->input->post('u0');
-        $u1 = $this->input->post('u1');
-        $u2 = $this->input->post('u2');
-        $u3 = $this->input->post('u3');
-        $u4 = $this->input->post('u4');
-        $u5 = $this->input->post('u5');
-        $u6 = $this->input->post('u6');
-        $u7 = $this->input->post('u7');
-        $u8 = $this->input->post('u8');
-        $u9 = $this->input->post('u9');
+        $x = intval($this->input->post('x'));
+        $y = intval($this->input->post('y'));
+        $u0 = intval($this->input->post('u0'));
+        $u1 = intval($this->input->post('u1'));
+        $u2 = intval($this->input->post('u2'));
+        $u3 = intval($this->input->post('u3'));
+        $u4 = intval($this->input->post('u4'));
+        $u5 = intval($this->input->post('u5'));
+        $u6 = intval($this->input->post('u6'));
+        $u7 = intval($this->input->post('u7'));
+        $u8 = intval($this->input->post('u8'));
+        $u9 = intval($this->input->post('u9'));
         $ok = 1;
         $units = $this->unitsdb->get_current_units($_SESSION['current_village'], $_SESSION['id']);
         if($units['Treant Protector']<$u0) $ok = 0;

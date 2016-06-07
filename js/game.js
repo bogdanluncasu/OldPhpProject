@@ -119,7 +119,7 @@ $(document).ready(function () {
             }, function (data) {
                 console.log(data);
                 if(data==1) {
-                    $("#error").html("Atacul a fost instantiat!");
+                    alert("Atacul a fost instantiat!");
                 }else if(data==2){
                     alert("Empty coordinates..");
                 }else if(data==3)

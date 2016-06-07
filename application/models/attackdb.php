@@ -66,7 +66,7 @@ class Attackdb extends CI_Model
 
         $this->db->update("tw_units");
 
-        $timestamp = time() + intval(sqrt(pow(($x - $my_x), 2) + pow(($y - $my_y), 2)));
+        $timestamp = time() + 60*intval(sqrt(pow(($x - $my_x), 2) + pow(($y - $my_y), 2)));
         $data = array(
             'villageId' => $id_village,
             'timestamp' => date("Y-m-d H:i:s", $timestamp),
@@ -158,7 +158,8 @@ class Attackdb extends CI_Model
         $this->db->where("villageId", $c->villageId);
         $result_d = $this->db->get("tw_items");
         if (count($result_d->result()) > 0)
-            $total_attack += ($total_attack * $result_d->result()[0]->attackBonus) / 100;
+            $total_attack += ($total_attack * $result_d->result()[0]->attackBonus) / 100
+                +$result_d->result()[0]->extraUnits*$units[0]['attack'];
         $total_defence = $this->get_totaldefence($id_attack);
 
         $this->db->from("tw_log_attack");
@@ -232,6 +233,15 @@ class Attackdb extends CI_Model
                 $rest['Treant_Protector'] = 0;
             }
 
+            $type=$this->getType($village_id);
+            if($type==1&&$rest['Barbar']==1||
+                $type==2&&$rest['Wise']==1||$type==3&&$rest['Mage']==1){
+                $this->db->select("userId");
+                $this->db->from("tw_village");
+                $this->db->join("tw_log_attack","tw_village.villageId=tw_log_attack.villageId");
+                $userResult=$this->db->get();
+                $this->conquestTown($userResult->result()[0]->userId,$result_e->result()[0]->userId,$village_id);
+            }
             $this->update_units($c->villageId, $rest);
             $this->remove_units($village_id);
             $this->get_reward($c->villageId, $village_id, $difference);
@@ -247,7 +257,29 @@ class Attackdb extends CI_Model
         $this->db->delete("tw_log_attack");
 
     }
-
+    public function get_all_reports($userId){
+        $this->db->where("userId",$userId);
+        $result=$this->db->get("tw_reports");
+        return $result->result();
+    }
+    public function conquestTown($userAtt,$userDef,$villageId){
+        $this->db->where("id",$userDef);
+        $res=$this->db->get("tw_users");
+        if(count($res->result())==1){
+            $this->db->where("id",$userDef);
+            $this->db->set("first",0);
+            $this->db->update("tw_users");
+        }
+        $this->db->where("villageId",$villageId);
+        $this->db->set("userId",$userAtt);
+        $this->db->update("tw_village");
+    }
+    public function getType($villageId){
+        $this->db->select("type");
+        $this->db->where("villageId",$villageId);
+        $result=$this->db->get("tw_village");
+        return $result->result()[0]->type;
+    }
     public function verify_alliance($x, $y)
     {
         $this->db->select("tw_users.id");
@@ -280,7 +312,7 @@ class Attackdb extends CI_Model
         $this->db->where("tw_village.userId", $id);
         $result = $this->db->get();
         foreach ($result->result() as $x) {
-            if ($x->timestamp <= time())
+            if (strtotime($x->timestamp) <= time())
                 $this->final_attack($x->id);
         }
     }
@@ -312,7 +344,8 @@ class Attackdb extends CI_Model
         $this->db->where("villageId", $c->villageId);
         $result_d = $this->db->get("tw_items");
         if (count($result_d->result()) > 0)
-            $total_defence += ($total_defence * $result_d->result()[0]->defenseBonus) / 100;
+            $total_defence += ($total_defence * $result_d->result()[0]->defenseBonus) / 100
+                +$result_d->result()[0]->extraUnits*$units[0]['defense'];
         $this->load->model("buildingsdb");
         $level_wall = $this->buildingsdb->levelOf("zid", $c->villageId);
         $total_defence += intval($level_wall * 10 + $level_wall * 10 / 6);

@@ -31,7 +31,23 @@
 
 
 <?php
+echo "<table class=\"table\" id='table'>
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>AttackVillageId</th>
+            <th>DefenceX</th>
+            <th>DefenceY</th>
+        </tr>
+        </thead>
+        <tbody>";
+for($i=0; $i<count($current_attacks); $i++){
+    echo "<tr>";
+    echo "<td>".$current_attacks[$i]['timestamp']."</td>";
+    echo "<td>".$current_attacks[$i]['villageId']."</td>";
+    echo "<td>".$current_attacks[$i]['x']."</td>";
+    echo "<td>".$current_attacks[$i]['y']."</td>";
+    echo "</tr>";
+}
+echo "</tbody></table>"; ?>
 
-    for($i=0; $i<count($current_attacks); $i++){
-        echo $current_attacks[$i]['timestamp'];
-    }

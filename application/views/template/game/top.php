@@ -5,13 +5,13 @@ if(!isset($_GET['village'])||intval($_GET['village'])>=count($villages))
 else $village=intval($_GET['village']);
 ?>
 <div class="sideMenu">
-    <a href="?open=chat">Chat</a>
+    <a href="?open=chat&village=<?php echo $village;?>">Chat</a>
     <a href="?open=map&village=<?php echo $village;?>">Map</a>
     <a href="?open=ranking&village=<?php echo $village;?>">Ranking</a>
     <a href="?open=attack&village=<?php echo $village;?>">Attack</a>
     <a href="?open=reports&village=<?php echo $village;?>">Reports</a>
-    <a href="?open=villages">Villages</a>
-    <a href="?open=alliance">Alliance</a>
+    <a href="?open=villages&village=<?php echo $village;?>">Villages</a>
+    <a href="?open=alliance&village=<?php echo $village;?>">Alliance</a>
 </div>
 <div id="friendList"></div>
 <div id="main_container">
