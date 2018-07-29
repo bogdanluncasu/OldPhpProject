@@ -5,7 +5,7 @@
  * Date: 5/7/16
  * Time: 2:37 PM
  */
-class fair
+class Fair
 {
 
     public function __construct()
