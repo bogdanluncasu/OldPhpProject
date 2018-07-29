@@ -270,15 +270,27 @@ Class Game extends CI_Controller
     public function equipItem(){
         if (isset($_SESSION['username'])) {
             $this->load->model('itemdb');
+            $this->load->model('fair');
             $villages=$this->user->get_villages($_SESSION['id']);
             if(!isset($_GET['village'])||intval($_GET['village'])>=count($villages))
                 $village=0;
             else $village=$_GET['village'];
             $item = $this->input->post('item');
-            $villageId = $villages[$village]['id'];
-            $userId = $_SESSION['id'];
-            if($villages[$village]['type']==$item['type'])
-            $this->itemdb->equip_items($villageId, $userId,$item,$villages[$village]);
+			$items = $this->$fair->getItems($item['type']);
+			$my_item = -1;
+			foreach($items as $i){
+				if($i['name']==$item['name']){
+					$my_item = $i;
+					break;
+				}
+			}
+			
+			if($my_item!=-1){
+				$villageId = $villages[$village]['id'];
+				$userId = $_SESSION['id'];
+				if($villages[$village]['type']==$item['type'])
+				$this->itemdb->equip_items($villageId, $userId,$item,$villages[$village]);
+			}
             echo "OK";
         }else die("<script>location.href = '/'</script>");
     }
