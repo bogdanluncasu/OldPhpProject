@@ -132,6 +132,25 @@ $(document).ready(function () {
     );
 
 });
+
+upgrade=function(buildingName)
+{
+    $.post("game/upgrade",{buildingName:buildingName },
+        function (data){
+            console.log(data);
+            location.reload();
+        });
+}
+
+downgrade=function(buildingName)
+{
+    $.post("game/downgrade",{buildingName:buildingName },
+        function (data){
+            console.log(data);
+            location.reload();
+        });
+}
+
 equip=function(item){
     $.post("game/equipItem", {
         item:item
