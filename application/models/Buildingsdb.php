@@ -1,7 +1,7 @@
 <?php
 
 
-class buildingsdb extends CI_Model
+class Buildingsdb extends CI_Model
 {
 
     public function __construct()

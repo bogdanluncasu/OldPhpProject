@@ -6,7 +6,7 @@
  * Date: 4/22/16
  * Time: 7:09 PM
  */
-class units
+class Units
 {
 
     public function __construct()
