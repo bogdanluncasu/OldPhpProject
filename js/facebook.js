@@ -27,7 +27,7 @@ function getFriends(){
                 var friends=$("#friendList");
                 $.each(response['data'],function(index,element){
                     FB.api(
-                      "/"+element['id']+"/picture",
+                      "/"+element['id']+"/picture?redirect=false",
                         function(data){
                             friends.append("<div class='friend'>" +
                                 "<img src=\""+data['data']['url']+"\" title='"+element['name']+"'/></div>");
