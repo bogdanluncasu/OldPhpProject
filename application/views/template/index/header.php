@@ -1,9 +1,7 @@
 <?php echo doctype("html5"); ?>
 <html>
 <head>
-	<script>location.href="https://awakeningclient.herokuapp.com/"</script>
-    
-	<title><?php echo TITLE; ?></title>
+    <title><?php echo TITLE; ?></title>
     <!-- stylesheets and other extern resurces -->
     <link rel = "stylesheet" type = "text/css"
           href = "css/media.css">
