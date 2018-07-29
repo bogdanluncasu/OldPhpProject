@@ -78,3 +78,17 @@ timestamp date,
 type int,
 buildingName varchar(200)
 );
+
+
+CREATE TABLE IF NOT EXISTS `tw_items` (
+  `name` int(11) NOT NULL,
+  `skills` int(11) NOT NULL,
+  `fairId` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+alter tablw tw_units add column Barbar int;
+alter tablw tw_units add column Mage int;
+alter tablw tw_units add column Wise int;
