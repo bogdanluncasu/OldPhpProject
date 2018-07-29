@@ -57,7 +57,7 @@ p {
 </head>
 <body>
 	<div id="container">
-		
+		<?php echo $message; ?>
 		
 	</div>
 </body>

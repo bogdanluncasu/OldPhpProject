@@ -14,7 +14,7 @@
                 + $buildings[$i]['price']/25;?>
             <tr>
                 <td>
-                    <?php echo "<img src=" . $buildings[$i]['image'] . " title=" . $buildings[$i]['name'] . " width = '360px' height='360px'/>" ?>
+                    <?php echo "<img src=" . $buildings[$i]['image'] . " title=" . $buildings[$i]['name'] . " width = '200px' height='200px'/>" ?>
                 </td>
 
                 <td>
