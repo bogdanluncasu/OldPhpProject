@@ -16,9 +16,12 @@ class Unitsdb extends CI_Model
 
     public function add_units($numberOf, $villageId, $userId, $timestamp, $unitName, $unitPrice)
     {
-        if ($this->get_number_of_units($villageId, $userId) + $this->get_number_of_recruit_units($villageId, $userId) +
-            $numberOf <= intval($this->levelOf("cazarma", $villageId) * 2.7 + 3)
-        ) {
+		$number_of_units = $this->get_number_of_units($villageId, $userId);
+		$number_of_recruiting_units = $this->get_number_of_recruit_units($villageId, $userId);
+		echo ($number_of_units);
+		echo ($number_of_recruiting_units);
+		echo ($numberOf);
+        if ($number_of_units + $number_of_recruiting_units + $numberOf <= intval($this->levelOf("cazarma", $villageId) * 2.7 + 3)) {
             $this->db->where("villageId", $villageId);
             $this->db->where("userId", $userId);
             $myVillage = $this->db->get("tw_village");
