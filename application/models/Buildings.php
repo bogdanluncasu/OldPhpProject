@@ -38,14 +38,14 @@ class Buildings
         $gouvernment = array('name'=> "guvern",
             'max_level' => 1,
             'time' => 300,
-            'image' =>"resources/graphics/buildings/Gouvernment.jpg",
+            'image' =>"resources/graphics/buildings/Government.jpg",
             'price'=>500,
             'min_level'=>10
         );
         $wall = array('name'=> "zid",
             'max_level' => 20,
             'time' => 30,
-            'image' =>"resources/graphics/buildings/Barrack.jpg",
+            'image' =>"resources/graphics/buildings/Wall.jpg",
             'price'=>5,
             'min_level'=>1
 
