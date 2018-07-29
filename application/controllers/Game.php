@@ -276,7 +276,7 @@ Class Game extends CI_Controller
                 $village=0;
             else $village=$_GET['village'];
             $item = $this->input->post('item');
-			$items = $this->$fair->getItems($item['type']);
+			$items = $this->fair->getItems($item['type']);
 			$my_item = -1;
 			foreach($items as $i){
 				if($i['name']==$item['name']){
